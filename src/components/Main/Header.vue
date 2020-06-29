@@ -61,9 +61,10 @@ mounted(){
 </script>
 
 <style scoped>
-    #id{
-      position: relative;
-      left: 100px;
+    #Header{
+      position: absolute;
+      left: 202px;
+      top : 100px;
     }
     .videoSize{
       width: 50%;

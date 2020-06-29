@@ -1,5 +1,6 @@
 <template>
   <div id="login">
+
       <form v-on:submit.prevent="submit">
           <div class="data">
               <div>
@@ -7,14 +8,14 @@
               </div>
               <div class="boxtxt">
                   <p class ="text" >Email</p>
-                  <input type="text" name="user"  v-model="account.email"/>
+                  <input type="text" name="user"  v-model="account.username"/>
               </div>
               <div class="boxtxt">
                   <p class ="text">Password</p>
                   <input type="password" name="pass"  v-model="account.password"/>
               </div>
-           <button class ="login" type="submit">Login</button>
-           <div v-if="home"><router-link to ="/home" class="router" ></router-link></div>
+           <button class ="login" type="submit" @click="change">Login</button>
+          <!-- <button  @click="$router.push({path:'/creategroup'})">ChangePage</button> -->
           </div>
         <div style="margin-top: 16px; color: red;">
             #Spy {{ JSON.stringify(account)}}
@@ -36,8 +37,8 @@ export default {
             act : false,
             obj : String,
             account:{
-                password: "Admin101857",
-                email: "test@example.com"
+                password: "kfAdl1542",
+                username: "test123456"
             },
         
         }
@@ -47,14 +48,29 @@ export default {
         submit(){
             console.log(JSON.stringify(this.account))
              axios.post('http://127.0.0.1:8000/auth/token/login/',this.account)
-                .then(response => { this.obj = response.data,this.change()} )
-                .catch(err => {console.error(err),alert("Email or Password Wrong")})
+                .then(response => { this.obj = response.data,window.localStorage.setItem('token',response.data.auth_token),this.change()} )
+                .catch(err => {
+                    if(err.response){ 
+                        console.error(err.response.data)
+                        console.error(err.response.status)
+                        console.error(err.response.headers)
+                        if(err.response.status == 400){
+                                alert("Email or Password Wrong")
+                            }
+                        else if(err.response.status == 404){
+                                alert("404 not found")
+                            }
+                        }
+
+                    
+                    })
             
         },
         change(){
-            this.$router.push({path:'/home'})
+            this.$router.push({path:"/home"})
             this.act = true
             console.log(JSON.stringify(this.obj))
+            console.log(window.localStorage.getItem('key'))
         },
 
    /*     hidePassword(){
@@ -73,20 +89,25 @@ export default {
 <style scoped>
     .data{
         font-family: sans-serif;
-        width: 1000px;
-        height: 500px;
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
+        width: 761px;
+        height: 419px;
+        left: 610px;
+        top: 250px;
+
         background: white;
         text-align: left;
         color: #605856;
+
+        background: #FFFFFF;
+        border: 1px solid #000000;
+        box-sizing: border-box;
+        border-radius: 5px;
     }
     .data input[type ="text"],.data input[type ="password"]{
         border:0;
         background: none;
-        display: block;
+        display: absolute;
         margin-bottom: 20px;
         text-align: left;
         border: 2px solid #EA2427;
@@ -105,28 +126,39 @@ export default {
     }
 
     .data p{
-        margin: 5%;
+        margin-top: 7%;
+        margin-left: 3%;
+        margin-bottom: 3%;
         color: #605856;
         padding-left: 50px;
         font-size: 30px;
         font-weight: 500;
     }
     .data button.login{
-        border:0;
+
+        position: absolute;
+        left: 70%;
+        top: 78%;
         background:  #EA2427;
-        display: block;
-        margin-left: 739px;  /* change*/
-        text-align: center;
-        border: 2px solid #EA2427;
         padding: 14px 10px;
+
+
+        
+        align-items: center;
+        text-align: center;
+        letter-spacing: -0.015em;
+
+        border: 6px solid #EA2427;
         width: 125px;
         outline: none;
         color: white;
         border-radius: 5px;
         transition: 0.25s;
+        line-height: 0px;
+
     }
     .data button:hover{
-        border: 2px solid #F46036;
+        border: 6px solid #F46036;
         background: #F46036;
         color: white;
     }
@@ -150,6 +182,7 @@ export default {
     .boxtxt p{
         padding-bottom: 5px;
     }
+
 </style>
 <style>
     body{

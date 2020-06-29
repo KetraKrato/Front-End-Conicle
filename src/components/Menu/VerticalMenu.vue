@@ -25,6 +25,9 @@
 <script>
 import HeadMenu from '@/components/Menu/HeadMenu.vue'
 export default {
+  beforeCreate(){
+    
+  },
        mounted(){
                 },
       data() {
@@ -59,6 +62,7 @@ export default {
 }
 </script>
 <style scoped>
+
     .home{
       padding:0;
       margin:0;
@@ -68,8 +72,10 @@ export default {
       padding: 10px;
       margin: 0px;
       list-style-type: none;
-      background-color: antiquewhite;
-      width: 200px;
+      background-color: white;
+      border-top: 1px solid black;
+      border-right: 1px solid black;
+      width: 350px;
       height: 1000px;
       float: left;
       font-size: 15px;

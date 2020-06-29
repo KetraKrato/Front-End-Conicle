@@ -7,6 +7,7 @@
       <button v-on:click="add">+</button> -->
           <div id="chapter">
             <Chapter v-for="i in Numtitle" :key="i"  :Chaptertitle="i" :NumVideo="NumVideo" v-bind:style="{ display:changeDisplay }" />
+            
 
             </div>
       
@@ -26,7 +27,7 @@ mounted(){
        Headertitle : String,
        Numtitle : {
          type:Array,
-         default: ()=> []
+         default: ()=> ['Chapter1','Chapter2']
        },
       NumVideo : {
          type:Array,

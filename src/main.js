@@ -10,6 +10,7 @@ import 'semantic-ui-css/semantic.min.css';
 import Vue2Filters from "vue2-filters";
 import VS2 from 'vue-script2';
 
+
 //import videojssw from 'videojs-resolution-switcher';
 //import VideoMin from "videojs-contrib-quality-levels";
 //import VVideo from "video.js/dist/video.js";
@@ -24,6 +25,7 @@ Vue.use(PortalVue);
 Vue.use(SemanticUI);
 Vue.use(Vue2Filters);
 Vue.use(VS2);
+
 //Vue.use(videojssw);
 
 
