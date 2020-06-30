@@ -29,6 +29,11 @@
           </div>
       </div>
       <Bar/>
+      <div class="mainbar">
+      <div class="M" @click="selectM">Main</div>
+      <div class="C">Course</div>
+      <div class="P" @click="selectP">People</div>
+    </div>
   </div>
 </template>
 
@@ -41,7 +46,16 @@ components:{
 methods: {
     select(){
         this.$router.push({path:"/learning"})
-    }
+    },
+    selectM() {
+      this.$router.push({ path: "/course" });
+    },
+    selectC() {
+      this.$router.push({ path: "/course" });
+    },
+    selectP() {
+      this.$router.push({ path: "/people" });
+    },
 },
 }
 </script>
@@ -122,5 +136,50 @@ img{
     font-size: 18px;
     line-height: 22px;
     
+}
+.mainbar {
+  position: absolute;
+  top: 0;
+
+}
+.M {
+  position: absolute;
+  width: 100px;
+  height: 50px;
+  left: 800px;
+  top: 30px;
+  font-size: 25px;
+  /*    border-bottom: 3px solid black;*/
+  padding-left: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.C {
+  position: absolute;
+  width: 100px;
+  height: 50px;
+  left: 900px;
+  top: 30px;
+  font-size: 25px;
+  border-bottom: 3px solid black;
+  padding-left: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.P {
+  position: absolute;
+  width: 100px;
+  height: 50px;
+  left: 1000px;
+  top: 30px;
+  font-size: 25px;
+  padding-left: 10px;
+  padding-right: 20px;
+  /*   border-bottom: 3px solid black;*/
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
 }
 </style>

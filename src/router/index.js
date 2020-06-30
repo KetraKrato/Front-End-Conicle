@@ -8,7 +8,8 @@ import Learning from '../views/Learning.vue'
 import Main from '../views/Main.vue'
 import Course from '../views/Coures.vue'
 import Part from '../views/Part.vue'
-
+import Welcome from '../views/Welcome.vue'
+import People from '../views/People.vue'
 
 Vue.use(VueRouter)
 
@@ -53,6 +54,16 @@ Vue.use(VueRouter)
     path:'/part',
     name:'part',
     component : Part
+  },
+  {
+    path:'/welcome',
+    name:'welcome',
+    component : Welcome
+  },
+  {
+    path:'/people',
+    name:'people',
+    component : People
   },
  
 ]
