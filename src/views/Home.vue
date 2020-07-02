@@ -69,7 +69,7 @@ export default {
 .GO {
   position: relative;
   display: block;
-  width: 1500px;
+  width: 1700px;
   margin-bottom: 50px;
 }
 .GO h1 {
@@ -81,7 +81,7 @@ export default {
 .GJ {
   position: relative;
   display: block;
-  width: 1500px;
+  width: 1700px;
   margin-bottom: 200px;
 }
 .GJ h1 {
