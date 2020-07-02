@@ -73,7 +73,26 @@ mounted(){
 
 <style scoped>
     .HeaderMenu{
+      margin-top: 29px;
         list-style-type: none;
+        font-family: Montserrat;
+font-style: normal;
+font-weight: bold;
+font-size: 18px;
+line-height: 22px;
+cursor: pointer;
+    }
+    #chapter{
+      font-family: Montserrat;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 22px;
+    }
+    img{
+      position: absolute;
+      top: 49px;
+      right: 20px;
     }
     .off{
          padding: 0px;

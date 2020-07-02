@@ -1,15 +1,20 @@
 <template>
   <div id="Vmenu">
       <ul class="menulist">
-        <li class="HeaderMenu"><ul>Home</ul></li>
+        <HeadMenu Headertitle = "Groups Owned" :Numtitle="['group 01','group 02','group 03','group 04']" />
+        <li class="HeaderMenu"><ul class="header">Home</ul></li>
 
-        <HeadMenu Headertitle="CourseUxUI" :Numtitle="['Chapter1','Chapter2']" />
+  <!--      <HeadMenu Headertitle = "group 01" :Numtitle="['Chapter1','Chapter2']" />
         <HeadMenu Headertitle = "CourseWeb" :Numtitle="['Chapter1','Chapter2','Chapter3','Chapter4']" />
         <HeadMenu Headertitle = "CoureseBackEnd" :Numtitle="['Chapter1','Chapter2','Chapter3','Chapter4','Chapter5']" />
         <HeadMenu Headertitle = "CourseBackEnd" :Numtitle="['Chapter1','Chapter2','Chapter3','Chapter4']" />
         
-        <li class="HeaderMenu">Contact</li>
-        <li class="HeaderMenu">Help</li>
+        <li class="HeaderMenu"><ul class="header">Group Owned</ul></li>
+          <HeadMenu Headertitle = "group 01" :Numtitle="['Chapter1','Chapter2']" />
+        <HeadMenu Headertitle = "CourseWeb" :Numtitle="['Chapter1','Chapter2','Chapter3','Chapter4']" />
+        <HeadMenu Headertitle = "CoureseBackEnd" :Numtitle="['Chapter1','Chapter2','Chapter3','Chapter4','Chapter5']" />
+        <HeadMenu Headertitle = "CourseBackEnd" :Numtitle="['bChapter1','Chapter2','Chapter3','Chapter4']" />
+        <li class="HeaderMenu">Help</li> -->
         
         <div>
         
@@ -110,5 +115,14 @@ export default {
          transform: rotate(90deg);
          transition:all 0.1s ease-in-out;
      } 
+     .header{
+       margin-bottom:10px ;
+       margin-top:10px ;
+       font-family: Montserrat;
+      font-style: normal;
+font-weight: bold;
+font-size: 18px;
+line-height: 22px;
+     }
     
 </style>

@@ -1,65 +1,52 @@
 <template>
-  <div id="course">
+  <div id="people">
     <div class="numcourse">
-      <span>All Courses(3)</span>
-      <v-if><span class="pluscourse">+ Create Course</span></v-if>
+      <span>Everyone(3)</span>
+      <v-if>
+          <p class="pluscourse" @click="isShowlink">+ Invite link</p>
+      </v-if>
     </div>
     <div class="coursebox">
       <div class="header">
-        <span class="name">Course name</span>
-        <span class="update">Last updated</span>
+        <span class="name">Name</span>
       </div>
       <div class="body">
-        <div class="onecourse" @click="select">
+        <div class="onecourse">
           <img class="profile" src="@/assets/school.png" />
-          <p class="detail">course 01</p>
-          <p class="time">01 June 2020</p>
+          <p class="detail">Firstname Surename</p>
         </div>
         <v-if>
-          <div class="editimg" @click="isShow">
+          <div class="editimg" @click="isShowOn">
             <img src="@/assets/edit.png" />
           </div>
         </v-if>
-        <div class="edit" v-bind:style="{ display: display }">
-          <span>Edit</span>
-          <span>Delete</span>
-        </div>
+     <!--   <div class="edit" v-bind:style="{ display: display }">
+          <span>Admin</span>
+          <span>Instrutor</span>
+          <span>Member</span>
+          <div class="linesubmenu"></div>
+          <span>Delete</span> 
+        </div> -->
       </div>
-      <div class="body">
+        <div class="body">
         <div class="onecourse">
           <img class="profile" src="@/assets/school.png" />
-          <p class="detail">course 02</p>
-          <p class="time">01 June 2020</p>
+          <p class="detail">Firstname Surename</p>
+          <p class="role">Admin</p>
         </div>
       </div>
-      <div class="body">
-        <div class="onecourse">
-          <img class="profile" src="@/assets/school.png" />
-          <p class="detail">course 03</p>
-          <p class="time">01 June 2020</p>
-        </div>
-      </div>
-      <div class="body">
-        <div class="onecourse">
-          <img class="profile" src="@/assets/school.png" />
-          <p class="detail">course 03</p>
-          <p class="time">01 June 2020</p>
-        </div>
-      </div>
-      <div class="body">
-        <div class="onecourse">
-          <img class="profile" src="@/assets/school.png" />
-          <p class="detail">course 03</p>
-          <p class="time">01 June 2020</p>
-        </div>
-      </div>
+
     </div>
     <Bar />
     <div class="mainbar">
       <div class="M" @click="selectM">Main</div>
-      <div class="C">Course</div>
-      <div class="P" @click="selectP">People</div>
+      <div class="C" @click="selectC">Course</div>
+      <div class="P">People</div>
     </div>
+              <div class="editlink" v-bind:style="{ display: displaylink }">
+          <p>Send a invite link.</p>
+          <div class="link">https://www.testpapa.com/</div>
+        </div>
   </div>
 </template>
 
@@ -72,20 +59,19 @@ export default {
   data() {
     return {
       display: "none",
+      displaylink: "none",
       show: false,
+      showlink: false,
     };
   },
   methods: {
-    select() {
-      this.$router.push({ path: "/part" });
-    },
     selectM() {
       this.$router.push({ path: "/main" });
     },
-    selectP() {
-      this.$router.push({ path: "/people" });
+    selectC() {
+      this.$router.push({ path: "/course" });
     },
-    isShow() {
+    isShowOn() {
       this.show = !this.show;
       if (this.show == false) {
         this.display = "none";
@@ -93,6 +79,16 @@ export default {
       } else {
         this.display = "block";
         console.log(this.show);
+      }
+    },
+    isShowlink() {
+      this.showlink = !this.showlink;
+      if (this.showlink == false) {
+        this.displaylink = "none";
+        console.log(this.showlink);
+      } else {
+        this.displaylink = "block";
+        console.log(this.showlink);
       }
     },
   },
@@ -117,6 +113,22 @@ export default {
   left: 417px;
   font-size: 28px;
   width: 1146px;
+  height: 45px;
+}
+p.pluscourse {
+  position: absolute;
+    padding-top: 12px;
+    width: 180px;
+    height: 45px;
+  right: 0px;
+  top: 0px;
+  text-align: center;
+    background: rgb(189, 188, 188);
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
 }
 .header {
   position: relative;
@@ -147,10 +159,11 @@ export default {
 }
 img.profile {
   position: relative;
-  left: 80px;
-  width: 120px;
+  left: 65px;
+  width: 65px;
   height: 65px;
   border: 1px solid black;
+  border-radius: 50%;
 }
 .detail {
   position: absolute;
@@ -163,7 +176,7 @@ img.profile {
   font-size: 18px;
   line-height: 22px;
 }
-.time {
+.role {
   position: absolute;
   top: 25px;
   right: 85px;
@@ -174,7 +187,6 @@ img.profile {
   font-size: 18px;
   line-height: 22px;
 }
-
 .editimg {
   position: absolute;
   right: 20px;
@@ -202,7 +214,7 @@ img.profile {
   right: -75px;
   top: 55px;
   width: 100px;
-  height: 60px;
+  height: 120px;
   background: #ffffff;
   border: 1px solid #000000;
   box-sizing: border-box;
@@ -212,23 +224,45 @@ img.profile {
   position: relative;
   display: block;
   background: white;
-  margin: 5%;
+  margin: 6%;
+}
+.edit span:nth-child(3) {
+  font-weight: bold;
+}
+.edit .linesubmenu {
+  height: 1px;
+  background: black;
 }
 
-.pluscourse {
-  position: absolute;
-  width: 300px;
-  right: 0px;
-  top: 0px;
-  text-align: right;
-
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 22px;
+.editlink{
+    position: absolute;
+width: 400px;
+height: 96px;
+right: 150px;
+top: 180px;
+background: white;
+      border: 1px solid #000000;
+  box-sizing: border-box;
+  border-radius: 5px;
 }
 
+.editlink p{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: bold;
+font-size: 18px;
+line-height: 22px;
+text-align: center;
+padding-top: 15px;
+}
+
+.editlink .link{
+text-align: center;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 22px;
+}
 .mainbar {
   position: absolute;
   top: 0;
@@ -253,7 +287,7 @@ img.profile {
   left: 900px;
   top: 30px;
   font-size: 25px;
-  border-bottom: 3px solid black;
+  /*  border-bottom: 3px solid black;*/
   padding-left: 10px;
   margin-left: 10px;
   margin-right: 10px;
@@ -268,7 +302,7 @@ img.profile {
   font-size: 25px;
   padding-left: 10px;
   padding-right: 20px;
-  /*   border-bottom: 3px solid black;*/
+  border-bottom: 3px solid black;
   margin-left: 10px;
   margin-right: 10px;
   cursor: pointer;
