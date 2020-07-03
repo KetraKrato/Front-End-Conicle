@@ -1,6 +1,12 @@
 <template>
   <div id="course">
-    <div class="numcourse">
+    <div class="GO">
+      <h1>All Courses</h1>
+        <GroupCourse/>
+        <GroupCourse/>
+      <!-- <HeaderM/> -->
+    </div>
+<!--    <div class="numcourse">
       <span>All Courses(3)</span>
       <v-if><span class="pluscourse">+ Create Course</span></v-if>
     </div>
@@ -53,11 +59,14 @@
           <p class="time">01 June 2020</p>
         </div>
       </div>
-    </div>
+      <GroupJoined/>
+    </div>-->
     <Bar />
     <div class="mainbar">
       <div class="M" @click="selectM">Main</div>
       <div class="C">Course</div>
+      <div class="At" @click="selectP">Attachment</div>
+      <div class="As" @click="selectP">Assignment</div>
       <div class="P" @click="selectP">People</div>
     </div>
   </div>
@@ -65,9 +74,10 @@
 
 <script>
 import Bar from "@/components/Bar.vue";
+import GroupCourse from "@/components/Group/GroupCourse.vue"; 
 export default {
   components: {
-    Bar,
+    Bar,GroupCourse
   },
   data() {
     return {
@@ -100,7 +110,19 @@ export default {
 </script>
 
 <style scoped>
-.coursebox {
+.GO {
+  position: relative;
+  display: block;
+  width: 1700px;
+  margin-bottom: 50px;
+}
+.GO h1 {
+  position: relative;
+  top: 130px;
+  left: 220px;
+  color: black;
+}
+/*.coursebox {
   position: relative;
   top: 205px;
   left: 417px;
@@ -181,7 +203,7 @@ img.profile {
   top: 20px;
   width: 31px;
   height: 31px;
-  /*border: 1px solid black;*/
+  /*border: 1px solid black;
   border-radius: 50%;
   background: rgb(218, 213, 213);
 }
@@ -193,7 +215,7 @@ img.profile {
   top: 2.5px;
   left: 3px;
   padding: 4px;
-  /*border-radius: 50%;*/
+  /*border-radius: 50%;
 }
 
 .edit {
@@ -227,30 +249,30 @@ img.profile {
   font-weight: 500;
   font-size: 18px;
   line-height: 22px;
-}
+} */
 
 .mainbar {
   position: absolute;
   top: 0;
 }
 .M {
-  position: absolute;
+  position: fixed;
   width: 100px;
   height: 50px;
-  left: 800px;
+  left: 650px;
   top: 30px;
   font-size: 25px;
-  /*    border-bottom: 3px solid black;*/
+  border-bottom: 3px solid black;
   padding-left: 20px;
   margin-left: 10px;
   margin-right: 10px;
   cursor: pointer;
 }
 .C {
-  position: absolute;
+  position: fixed;
   width: 100px;
   height: 50px;
-  left: 900px;
+  left: 750px;
   top: 30px;
   font-size: 25px;
   border-bottom: 3px solid black;
@@ -259,11 +281,37 @@ img.profile {
   margin-right: 10px;
   cursor: pointer;
 }
-.P {
-  position: absolute;
+.At {
+  position: fixed;
+  width: 100px;
+  height: 50px;
+  left: 850px;
+  top: 30px;
+  font-size: 25px;
+  /*     border-bottom: 3px solid black;*/
+  padding-left: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.As {
+  position: fixed;
   width: 100px;
   height: 50px;
   left: 1000px;
+  top: 30px;
+  font-size: 25px;
+  /*     border-bottom: 3px solid black;*/
+  padding-left: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.P {
+  position: fixed;
+  width: 100px;
+  height: 50px;
+  left: 1150px;
   top: 30px;
   font-size: 25px;
   padding-left: 10px;

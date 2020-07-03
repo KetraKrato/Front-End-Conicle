@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="GO">
-      <h1>Group Owned(5)</h1>
+      <h1>All Groups</h1>
       <GroupOwned />
       <GroupOwned />
       <GroupOwned />
@@ -9,16 +9,6 @@
       <GroupOwned />
 
       <!-- <HeaderM/> -->
-    </div>
-    <div class="GJ">
-      <h1>Group Joined(7)</h1>
-      <GroupJoined />
-      <GroupJoined />
-      <GroupJoined />
-      <GroupJoined />
-      <GroupJoined />
-      <GroupJoined />
-      <GroupJoined />
     </div>
     <div class="V">
       <Bar />
@@ -42,7 +32,6 @@ import Bar from "@/components/Bar.vue";
 //import HeaderM from "@/components/Main/Header.vue"
 //import Body from "@/components/Main/Body.vue"
 import GroupOwned from "@/components/Group/GroupOwned.vue";
-import GroupJoined from "@/components/Group/GroupJoined.vue";
 
 export default {
   name: "Home",
@@ -52,7 +41,6 @@ export default {
     // HeaderM,
     // Body,
     GroupOwned,
-    GroupJoined,
   },
 };
 </script>

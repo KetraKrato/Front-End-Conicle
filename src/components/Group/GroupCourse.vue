@@ -4,8 +4,8 @@
       <img class="imggroup" src="@/assets/barten.jpg" />
     </div>
     <div class="textblock">
-      <span class="head">groupnameA</span>
-      <span class="member">0 member</span>
+      <span class="head">Course 01</span>
+      <span class="member">3 sessions</span>
 
       <div class="des">
         <span>--description--</span>
@@ -39,7 +39,7 @@ export default {
     },
     select() {
       console.log("SelectGroup");
-      this.$router.push({ path: "/main" });
+      this.$router.push({ path: "/subcourse" });
     }
   }
 };
