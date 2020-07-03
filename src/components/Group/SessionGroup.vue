@@ -1,12 +1,15 @@
 <template>
-  <div id="owned" class="block" @click="select" v-bind:style="{display : displaycourse}">
+  <div id="owned" class="block" @click="selectS">
     <div class="imgblock">
       <img class="imggroup" src="@/assets/barten.jpg" />
+    <div class="numsteps">
+        <p>3</p>
+        <p>Steps</p>
+        </div>  
     </div>
+    
     <div class="textblock">
-      <span class="head">Course 01</span>
-      <span class="member">3 sessions</span>
-
+      <span class="head">session 01</span>
       <div class="des">
         <span>--description--</span>
       </div>
@@ -16,6 +19,9 @@
 
 <script>
 export default {
+    components:{
+        
+    },
   data() {
     return {
       display: "none",
@@ -39,18 +45,10 @@ export default {
         console.log(this.show);
       }
     },
-    select() {
-            this.showcourse = !this.showcourse;
-      if (this.showcourse == false) {
-        this.displaycourse = "none";
-        console.log(this.showcourse);
-      } else {
-        this.displaycourse = "";
-        console.log(this.showcourse);
-      }
-      console.log("SelectGroup");
-      this.$router.push({ path: "/subcourse" });
-    }
+    selectS(){
+            this.$router.push({ path: "/session" });
+        },
+
   }
 };
 </script>
@@ -65,10 +63,9 @@ export default {
   width: 350px;
 
   height: 359px;
-  top: 130px;
-  left: 210px;
+
   margin-top: 32px;
-  margin-left: 32px;
+  margin-right: 20px;
   cursor: pointer;
 }
 .imgblock {
@@ -94,17 +91,26 @@ span.head {
   top: 16px;
   left: 32px;
 }
-span.member {
-  position: absolute;
-  display: block;
-  font-size: 18px;
-  left: 32px;
-  top: 55px;
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 17px;
+.numsteps{
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    right: 0px;
+    background: #4F4F4F;
+    color: white;
+    padding: 8px;
+    border-radius: 0px 6px 0px 0px;
+}
+.numsteps p{
+    margin: 0px;
+    padding: 0px;
+    font-family: Montserrat;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 25px;
+align-items: center;
+text-align: center;
 }
 .des {
   position: absolute;

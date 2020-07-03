@@ -10,7 +10,9 @@ import Course from '../views/Coures.vue'
 import Part from '../views/Part.vue'
 import Welcome from '../views/Welcome.vue'
 import People from '../views/People.vue'
-
+import Subcourse from '../views/Subcourse.vue'
+import Session from '../views/Session.vue'
+import Attachment from '../views/Attachment.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -48,7 +50,23 @@ Vue.use(VueRouter)
   {
     path:'/course',
     name:'course',
-    component : Course
+    component : Course,
+    /*children:[
+      {
+        path:'subcourse',
+        component: Subcourse
+      },
+    ]*/
+  },
+  {
+    path:'/subcourse',
+    name:'subcourse',
+    component : Subcourse
+  },
+  {
+    path:'/session',
+    name:'session',
+    component : Session
   },
   {
     path:'/part',
@@ -59,6 +77,11 @@ Vue.use(VueRouter)
     path:'/welcome',
     name:'welcome',
     component : Welcome
+  },
+  {
+    path:'/attachment',
+    name:'attachment',
+    component : Attachment
   },
   {
     path:'/people',
