@@ -21,10 +21,14 @@
 </template>
 
 <script>
+import axios from "axios";
 import Vmenu from "@/components/Menu/VerticalMenu.vue"
 export default {
     components:{
         Vmenu
+    },
+    props:{
+
     },
     data() {
     return {
@@ -34,11 +38,40 @@ export default {
                 GroupName : "",
                 Description :"",
             },
-            account:{
-                username: "NoneUser"
-            },
+      account:{
+        username :"",
+        first_name:"",
+        Last_name:"",
+        id:Number
+      },
     }
 },
+  mounted(){
+          axios
+        .get("http://127.0.0.1:8000/auth/users/me/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.account = response.data;
+          console.log(response.data);
+          console.log(this.account);
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+            console.error(err.response.data);
+            console.error(err.response.status);
+            console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });
+  },
 methods: {
     openNav(){
             this.isleft =! this.isleft

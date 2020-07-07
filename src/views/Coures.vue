@@ -2,65 +2,10 @@
   <div id="course">
     <div class="GO" v-bind:style="{display : displaycourse}">
       <h1 class="course" >All Courses</h1>
-        <GroupCourse/>
-        <GroupCourse/>
+      <GroupCourse v-for="i in courselist" :key="i"  :Idcourse="i.id" :NameCourse="i.name" :NumSession="i.posts.length" :Description="i.description" :Cover="i.cover" />
       <!-- <HeaderM/> -->
     </div>
-<!--    <div class="numcourse">
-      <span>All Courses(3)</span>
-      <v-if><span class="pluscourse">+ Create Course</span></v-if>
-    </div>
-    <div class="coursebox">
-      <div class="header">
-        <span class="name">Course name</span>
-        <span class="update">Last updated</span>
-      </div>
-      <div class="body">
-        <div class="onecourse" @click="select">
-          <img class="profile" src="@/assets/school.png" />
-          <p class="detail">course 01</p>
-          <p class="time">01 June 2020</p>
-        </div>
-        <v-if>
-          <div class="editimg" @click="isShow">
-            <img src="@/assets/edit.png" />
-          </div>
-        </v-if>
-        <div class="edit" v-bind:style="{ display: display }">
-          <span>Edit</span>
-          <span>Delete</span>
-        </div>
-      </div>
-      <div class="body">
-        <div class="onecourse">
-          <img class="profile" src="@/assets/school.png" />
-          <p class="detail">course 02</p>
-          <p class="time">01 June 2020</p>
-        </div>
-      </div>
-      <div class="body">
-        <div class="onecourse">
-          <img class="profile" src="@/assets/school.png" />
-          <p class="detail">course 03</p>
-          <p class="time">01 June 2020</p>
-        </div>
-      </div>
-      <div class="body">
-        <div class="onecourse">
-          <img class="profile" src="@/assets/school.png" />
-          <p class="detail">course 03</p>
-          <p class="time">01 June 2020</p>
-        </div>
-      </div>
-      <div class="body">
-        <div class="onecourse">
-          <img class="profile" src="@/assets/school.png" />
-          <p class="detail">course 03</p>
-          <p class="time">01 June 2020</p>
-        </div>
-      </div>
-      <GroupJoined/>
-    </div>-->
+
     <Bar />
     <div class="mainbar">
       <div class="M" @click="selectM">Main</div>
@@ -75,6 +20,7 @@
 <script>
 import Bar from "@/components/Bar.vue";
 import GroupCourse from "@/components/Group/GroupCourse.vue"; 
+import axios from "axios"
 export default {
   components: {
     Bar,GroupCourse
@@ -85,9 +31,40 @@ export default {
       show: false,
       displaycourse: "block",
       displaysubcourse:"none",
-    };
+      courselist:[],
+    }
+  },
+
+  mounted(){
+          axios
+        .get("http://127.0.0.1:8000/sop/course/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.courselist = response.data;
+          console.log(response.data);
+          console.log(this.courselist);
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+            console.error(err.response.data);
+            console.error(err.response.status);
+            console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });
   },
   methods: {
+    callCourse(){
+
+    },
     selectcourse() {
       this.displaycourse = !this.displaycourse;
       this.$router.push({ path: "/course/subcourse" });

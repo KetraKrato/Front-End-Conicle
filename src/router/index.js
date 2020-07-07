@@ -59,7 +59,7 @@ Vue.use(VueRouter)
     ]*/
   },
   {
-    path:'/subcourse',
+    path:'/subcourse/:IdCourse',
     name:'subcourse',
     component : Subcourse
   },

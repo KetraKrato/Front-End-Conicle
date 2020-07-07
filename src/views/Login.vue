@@ -13,7 +13,7 @@
           <p class="text">Password</p>
           <input type="password" name="pass" v-model="account.password" />
         </div>
-        <button class="login" type="submit" @click="change">Login</button>
+        <button class="login" type="submit" @click="submit">Login</button>
         <!-- <button  @click="$router.push({path:'/creategroup'})">ChangePage</button> -->
       </div>
       <div style=" position: absolute; margin-top: 16px; color: red;">
@@ -39,8 +39,8 @@ export default {
       act: false,
       obj: String,
       account: {
-        password: "kfAdl1542",
-        username: "test123456",
+        password: "Ketra13579",
+        username: "testuser@gmail.com",
       },
     };
   },

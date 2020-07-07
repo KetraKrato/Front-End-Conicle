@@ -14,13 +14,13 @@
       <Bar />
     </div>
 
-    <div class="iconplus">
+ <!--   <div class="iconplus">
       <img
         class="iconplus"
         src="@/assets/plusoncircle.png"
         @click="$router.push({ path: '/creategroup' })"
       />
-    </div>
+    </div> -->
 
     <!--  <Body/> -->
   </div>
@@ -29,6 +29,7 @@
 <script>
 // @ is an alias to /src
 import Bar from "@/components/Bar.vue";
+//import axios from "axios";
 //import HeaderM from "@/components/Main/Header.vue"
 //import Body from "@/components/Main/Body.vue"
 import GroupOwned from "@/components/Group/GroupOwned.vue";
@@ -41,6 +42,27 @@ export default {
     // HeaderM,
     // Body,
     GroupOwned,
+  },
+  data() {
+    return {
+      account:{
+        username :"",
+        first_name:"",
+        Last_name:"",
+        id:Number
+      }
+    }
+  },
+  mounted(){
+
+  },
+  methods: {
+        submit() {
+      console.log(
+        JSON.stringify(this.dataGroup) + window.localStorage.getItem("key")
+      );
+
+    },
   },
 };
 </script>

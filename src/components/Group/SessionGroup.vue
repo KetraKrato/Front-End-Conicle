@@ -3,7 +3,7 @@
     <div class="imgblock">
       <img class="imggroup" src="@/assets/barten.jpg" />
     <div class="numsteps">
-        <p>3</p>
+        <p>2</p>
         <p>Steps</p>
         </div>  
     </div>
@@ -18,22 +18,72 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
     components:{
         
     },
   data() {
     return {
+      IdSes:Number,
       display: "none",
       show: false,
       displaycourse:"",
       showcourse: true,
+      post:{
+        id:Number,
+        name:"",
+        description:"",
+        cover:"",
+        publish:"",
+        creator:{
+          username:"",
+          first_name:"",
+          last_name:"",
+          id:Number
+        },
+        step:""
+      }
     };
   },
-  mounted() {},
-  props: {
+    props: {
+        IdSession : Number,
+  },
+  beforeCreate(){
+    this.IdSes = this.IdSession;
+    axios
+        .get("http://127.0.0.1:8000/sop/post/1/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.post = response.data;
+          console.log(response.data);
+          console.log("this is post"+this.post);
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+         //   console.error(err.response.data);
+            console.error(err.response.status);
+       //     console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });
 
   },
+  created(){
+    
+  },
+  mounted(){
+        
+   },
+
   methods: {
     isShow() {
       this.show = !this.show;

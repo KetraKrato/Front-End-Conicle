@@ -1,26 +1,28 @@
 <template>
   <div id="subcourse">
       <div class="subcourse">
-            <h1>All Course > course 01</h1>
+            <h1>All Course > {{course.name}}</h1>
         <sui-progress size="small" :percent="percent" />
               <div class="header">
-        <img class="imgcourse" src="@/assets/barten.jpg" />
+        <img class="imgcourse" :src="course.cover" />
         <div class="coursebox">
-          <h1 class="coursename">course 01</h1>
+          <h1 class="coursename">{{course.name}} </h1>
           <p
             class="detailgroup"
-          >jfoiejzsdlfjkljnkvasadfvo;jpi nsad;oijvsadvo;ijsadvo;jisdavo;ji;osadijv</p>
+          >{{course.description}}</p>
         </div>
       </div>
       </div>
       <div class="sessionbox">
-    <h1>All Sessions in course 01</h1>
+    <h1>All Sessions in {{course.name}}</h1>
+     <SessionGroup v-for="i in course.posts" :key="i"  :IdSession="course.posts[i]"/>
+     <p>{{course.posts[0]}}</p>
+       <!-- <SessionGroup/>
         <SessionGroup/>
         <SessionGroup/>
         <SessionGroup/>
         <SessionGroup/>
-        <SessionGroup/>
-        <SessionGroup/>
+        <SessionGroup/> -->
       </div>
       <Bar/>
           <div class="mainbar">
@@ -34,6 +36,7 @@
 </template>
 
 <script>
+import axios from "axios"
 import Bar from "@/components/Bar.vue";
 import SessionGroup from "@/components/Group/SessionGroup.vue"
 export default {
@@ -42,9 +45,80 @@ export default {
   },
   data() {
       return {
+          IdCourse:Number,
           percent: 10,
+          course:{
+            id:Number,
+            name:"",
+            description:"",
+            cover:"",
+            publish:Boolean,
+            creator:{
+              username:"",
+              first_name:"",
+              last_name:"",
+              id:Number
+            },
+          posts:[]
+          }
       }
   },
+  beforeCreate(){
+    this.IdCourse = this.$route.params.IdCourse;
+    axios
+        .get("http://127.0.0.1:8000/sop/course/"+this.IdCourse+"/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.course = response.data;
+          console.log(response.data);
+          console.log(this.course);
+        })
+        .catch((err) => {
+          if (err.response) {
+           // console.error(err.response.data);
+            console.error(err.response.status);
+         //   console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });
+
+  },
+  created(){
+    
+  },
+   mounted(){
+      /*    axios
+        .get("http://127.0.0.1:8000/sop/course/"+this.IdCourse+"/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.course = response.data;
+          console.log(response.data);
+          console.log(this.course);
+        })
+        .catch((err) => {
+          if (err.response) {
+           // console.error(err.response.data);
+            console.error(err.response.status);
+         //   console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });*/
+   }
+
 }
 </script>
 

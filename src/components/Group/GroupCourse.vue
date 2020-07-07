@@ -1,14 +1,14 @@
 <template>
   <div id="owned" class="block" @click="select" v-bind:style="{display : displaycourse}">
     <div class="imgblock">
-      <img class="imggroup" src="@/assets/barten.jpg" />
+      <img class="imggroup" :src="Cover" />
     </div>
     <div class="textblock">
-      <span class="head">Course 01</span>
-      <span class="member">3 sessions</span>
+      <span class="head">{{NameCourse}}</span>
+      <span class="member">{{NumSession}} sessions</span>
 
       <div class="des">
-        <span>--description--</span>
+        <span>{{Description}}</span>
       </div>
     </div>
   </div>
@@ -26,7 +26,11 @@ export default {
   },
   mounted() {},
   props: {
-
+      Idcourse:Number,
+      NameCourse:String,
+      NumSession:Number,
+      Description:String,
+      Cover:String
   },
   methods: {
     isShow() {
@@ -49,7 +53,8 @@ export default {
         console.log(this.showcourse);
       }
       console.log("SelectGroup");
-      this.$router.push({ path: "/subcourse" });
+      this.$router.push({ name: "subcourse", params:{ IdCourse: this.Idcourse} });
+      //this.$router.push({ path: "/subcourse"});
     }
   }
 };
