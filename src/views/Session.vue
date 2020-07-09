@@ -1,22 +1,23 @@
 <template>
   <div id="session">
     <div class="subcourse">
-      <h1>All Course > course 01 > session 01</h1>
+      <h1>All Course > {{CourseName}} > {{post.name}}</h1>
       <div class="header">
-        <img class="imgcourse" src="@/assets/barten.jpg" />
+        <img class="imgcourse" :src="post.cover" />
         <div class="coursebox">
-          <h1 class="coursename">session 01</h1>
+          <h1 class="coursename">{{post.name}}</h1>
           <p
             class="detailgroup"
-          >jfoiejzsdlfjkljnkvasadfvo;jpi nsad;oijvsadvo;ijsadvo;jisdavo;ji;osadijv</p>
+          >{{post.description}}</p>
         </div>
       </div>
     </div>
     <div class="allsteps">
-        <h1>All Steps in session 01</h1>
+        <h1>All Steps in {{post.name}}</h1>
+        <Steps v-for="i in post.step" :key="i" :IdStep="i.id" />
+       <!-- <Steps/>
         <Steps/>
-        <Steps/>
-        <Steps/>
+        <Steps/> -->
     </div>
     <Bar/>
      <div class="mainbar">
@@ -32,10 +33,77 @@
 <script>
 import Steps from "@/components/Group/Steps.vue";
 import Bar from "@/components/Bar.vue";
+import axios from "axios"
 export default {
     components:{
         Steps,Bar
     },
+    props:{
+      
+    },
+  data() {
+    return {
+      IdCourse:Number,
+      CourseName:"",
+      IdSes:Number,
+      display: "none",
+      show: false,
+      displaycourse:"",
+      showcourse: true,
+      post:{
+        id:Number,
+        name:"",
+        description:"",
+        cover:"",
+        publish:"",
+        creator:{
+          username:"",
+          first_name:"",
+          last_name:"",
+          id:Number
+        },
+        step:[]
+      }
+    };
+  },
+    mounted(){
+         this.IdSes= this.$route.params.IdSession; //get IdSession in path
+         this.IdCourse= this.$route.params.IdCourse; //get IdSession in path
+    axios
+        .get("http://127.0.0.1:8000/sop/course/"+this.IdCourse+"/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        }).then((response) => {
+          this.CourseName = response.data.name;
+          console.log(response.data.name);
+          console.log(this.CourseName);
+        });
+    axios
+        .get("http://127.0.0.1:8000/sop/post/"+this.IdSes+"/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.post = response.data;
+          console.log(response.data);
+          console.log(this.post);
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+         //   console.error(err.response.data);
+            console.error(err.response.status);
+       //     console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });
+   },
     methods: {
         selectM(){
             this.$router.push({ path: "/main" });

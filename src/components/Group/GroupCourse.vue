@@ -24,9 +24,10 @@ export default {
       showcourse: true,
     };
   },
-  mounted() {},
+  mounted() {
+  },
   props: {
-      Idcourse:Number,
+      IdCourse:Number,
       NameCourse:String,
       NumSession:Number,
       Description:String,
@@ -53,7 +54,9 @@ export default {
         console.log(this.showcourse);
       }
       console.log("SelectGroup");
-      this.$router.push({ name: "subcourse", params:{ IdCourse: this.Idcourse} });
+      console.log(this.IdCourse)
+      window.localStorage.setItem("IdCourse", this.IdCourse);
+      this.$router.push({ name: "subcourse", params:{ NameCourse: this.NameCourse} });
       //this.$router.push({ path: "/subcourse"});
     }
   }

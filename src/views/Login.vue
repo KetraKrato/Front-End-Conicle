@@ -7,7 +7,7 @@
         </div>
         <div class="boxtxt">
           <p class="text">Email</p>
-          <input type="text" name="user" v-model="account.username" />
+          <input type="text" name="user" v-model="account.email" />
         </div>
         <div class="boxtxt">
           <p class="text">Password</p>
@@ -40,7 +40,7 @@ export default {
       obj: String,
       account: {
         password: "Ketra13579",
-        username: "testuser@gmail.com",
+        email: "testuser02@gmail.com",
       },
     };
   },

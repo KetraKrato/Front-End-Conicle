@@ -13,6 +13,7 @@ import People from '../views/People.vue'
 import Subcourse from '../views/Subcourse.vue'
 import Session from '../views/Session.vue'
 import Attachment from '../views/Attachment.vue'
+import Assignment from '../views/Assignment.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -28,8 +29,8 @@ Vue.use(VueRouter)
 
   },
   {
-    path: '/main',
-    name: 'Main',
+    path: '/:NameGroup/main',
+    name: 'main',
     component: Main
   },
  /* {
@@ -48,7 +49,7 @@ Vue.use(VueRouter)
     component : Learning
   },
   {
-    path:'/course',
+    path:'/:NameGroup/course',
     name:'course',
     component : Course,
     /*children:[
@@ -59,14 +60,15 @@ Vue.use(VueRouter)
     ]*/
   },
   {
-    path:'/subcourse/:IdCourse',
+    path:'/subcourse/:NameCourse',
     name:'subcourse',
     component : Subcourse
   },
   {
-    path:'/session',
+    path:'/session/:IdCourse/:IdSession',
     name:'session',
-    component : Session
+    component : Session,
+    props: true
   },
   {
     path:'/part',
@@ -79,12 +81,17 @@ Vue.use(VueRouter)
     component : Welcome
   },
   {
-    path:'/attachment',
+    path:'/:NameGroup/attachment',
     name:'attachment',
     component : Attachment
   },
   {
-    path:'/people',
+    path:'/:NameGroup/assignment',
+    name:'assignment',
+    component : Assignment
+  },
+  {
+    path:'/:NameGroup/people',
     name:'people',
     component : People
   },

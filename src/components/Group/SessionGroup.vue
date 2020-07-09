@@ -1,17 +1,17 @@
 <template>
   <div id="owned" class="block" @click="selectS">
     <div class="imgblock">
-      <img class="imggroup" src="@/assets/barten.jpg" />
+      <img class="imggroup" :src="post.cover" />
     <div class="numsteps">
-        <p>2</p>
+        <p>{{post.step.length}}</p>
         <p>Steps</p>
         </div>  
     </div>
     
     <div class="textblock">
-      <span class="head">session 01</span>
+      <span class="head">{{post.name}}</span>
       <div class="des">
-        <span>--description--</span>
+        <span>{{post.description}}</span>
       </div>
     </div>
   </div>
@@ -42,17 +42,20 @@ export default {
           last_name:"",
           id:Number
         },
-        step:""
+        step:[]
       }
     };
   },
     props: {
+        IdCourse : Number,
         IdSession : Number,
   },
-  beforeCreate(){
-    this.IdSes = this.IdSession;
+
+  mounted(){
+        console.log(this.IdSession)
+         this.IdSes = this.IdSession;
     axios
-        .get("http://127.0.0.1:8000/sop/post/1/",{
+        .get("http://127.0.0.1:8000/sop/post/"+this.IdSes+"/",{
           headers: {
             Authorization: `token ${window.localStorage.getItem("token")}`,
           },
@@ -60,7 +63,7 @@ export default {
         .then((response) => {
           this.post = response.data;
           console.log(response.data);
-          console.log("this is post"+this.post);
+          console.log(this.post);
         })
         .catch((err) => {
           if (err.response) {
@@ -75,13 +78,6 @@ export default {
             }
           }
         });
-
-  },
-  created(){
-    
-  },
-  mounted(){
-        
    },
 
   methods: {
@@ -96,7 +92,8 @@ export default {
       }
     },
     selectS(){
-            this.$router.push({ path: "/session" });
+            window.localStorage.setItem("IdSessione", this.IdSes);
+            this.$router.push({ name: "session", params:{ IdCourse: this.IdCourse,IdSession: this.IdSes} });
         },
 
   }

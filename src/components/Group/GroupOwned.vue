@@ -1,11 +1,11 @@
 <template>
   <div id="owned" class="block" @click="select">
     <div class="imgblock">
-      <img class="imggroup" src="@/assets/barten.jpg" />
+      <img class="imggroup" :src="ImgGroup" />
     </div>
     <div class="textblock">
-      <span class="head">groupnameA</span>
-      <span class="member">0 member</span>
+      <span class="head">{{NameGroup}}</span>
+      <span class="member">{{member.length}} member</span>
       <!--   <div class="submenu"><img src="@/assets/menupoint.png" @click="isShow"></div> 
         
         <div class="popup" v-bind:style="{ display: display }">
@@ -14,23 +14,53 @@
             <span>Delete</span>
       </div>-->
       <div class="des">
-        <span>--description--</span>
+        <span>{{DesGroup}}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios"
 export default {
   data() {
     return {
+      member:{},
       display: "none",
       show: false
     };
   },
-  mounted() {},
+  mounted() {
+    axios
+        .get("http://127.0.0.1:8000/group/getmember/"+this.IdGroup+"/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.member= response.data;
+          console.log(response.data);
+          console.log("this is member"+JSON.stringify(this.member));
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+            console.error(err.response.data);
+            console.error(err.response.status);
+            console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });
+  },
   props: {
-
+    IdGroup:Number,
+    NameGroup:String,
+    DesGroup:String,
+    ImgGroup:String
   },
   methods: {
     isShow() {
@@ -45,7 +75,10 @@ export default {
     },
     select() {
       console.log("SelectGroup");
-      this.$router.push({ path: "/main" });
+      window.localStorage.setItem("IdGroup",this.IdGroup);
+      window.localStorage.setItem("NameGroup",this.NameGroup);
+      this.$router.push({ params:{ NameGroup: this.NameGroup }, name: "main" });
+    //  this.$router.push({ path: "/main" });
     }
   }
 };

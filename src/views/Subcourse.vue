@@ -15,8 +15,7 @@
       </div>
       <div class="sessionbox">
     <h1>All Sessions in {{course.name}}</h1>
-     <SessionGroup v-for="i in course.posts" :key="i"  :IdSession="course.posts[i]"/>
-     <p>{{course.posts[0]}}</p>
+     <SessionGroup v-for="i in course.posts" :key="i"  :IdCourse = IdCourse :IdSession="course.posts[i-1]"/>
        <!-- <SessionGroup/>
         <SessionGroup/>
         <SessionGroup/>
@@ -27,9 +26,9 @@
       <Bar/>
           <div class="mainbar">
       <div class="M" @click="selectM">Main</div>
-      <div class="C">Course</div>
-      <div class="At" @click="selectP">Attachment</div>
-      <div class="As" @click="selectP">Assignment</div>
+      <div class="C" @click="selectC">Course</div>
+      <div class="At" @click="selectAt">Attachment</div>
+      <div class="As" @click="selectAs">Assignment</div>
       <div class="P" @click="selectP">People</div>
     </div>
   </div>
@@ -64,7 +63,13 @@ export default {
       }
   },
   beforeCreate(){
-    this.IdCourse = this.$route.params.IdCourse;
+
+
+  },
+  created(){
+    this.IdCourse = window.localStorage.getItem("IdCourse");
+  },
+   mounted(){
     axios
         .get("http://127.0.0.1:8000/sop/course/"+this.IdCourse+"/",{
           headers: {
@@ -89,35 +94,24 @@ export default {
           }
         });
 
-  },
-  created(){
-    
-  },
-   mounted(){
-      /*    axios
-        .get("http://127.0.0.1:8000/sop/course/"+this.IdCourse+"/",{
-          headers: {
-            Authorization: `token ${window.localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => {
-          this.course = response.data;
-          console.log(response.data);
-          console.log(this.course);
-        })
-        .catch((err) => {
-          if (err.response) {
-           // console.error(err.response.data);
-            console.error(err.response.status);
-         //   console.error(err.response.headers);
-            if (err.response.status == 400) {
-              //   alert("Email or Password Wrong")
-            } else if (err.response.status == 404) {
-              //    alert("404 not found")
-            }
-          }
-        });*/
-   }
+   },
+   methods: {
+        selectM(){
+            this.$router.push({ path: "/main" });
+        },
+        selectAt(){
+            this.$router.push({ path: "/attachment" });
+        },
+        selectAs(){
+            this.$router.push({ path: "/main" });
+        },
+        selectP(){
+            this.$router.push({ path: "/people" });
+        },
+        selectC() {
+            this.$router.push({ path: "/course" });
+    },
+   },
 
 }
 </script>

@@ -2,11 +2,11 @@
   <div class="home">
     <div class="GO">
       <h1>All Groups</h1>
+      <GroupOwned v-for="i in grouplist" :key="i" :IdGroup="i.id" :NameGroup="i.group_name" :DesGroup="i.group_description" :ImgGroup="i.group_image"/>
+   <!--   <GroupOwned />
       <GroupOwned />
       <GroupOwned />
-      <GroupOwned />
-      <GroupOwned />
-      <GroupOwned />
+      <GroupOwned /> -->
 
       <!-- <HeaderM/> -->
     </div>
@@ -29,6 +29,7 @@
 <script>
 // @ is an alias to /src
 import Bar from "@/components/Bar.vue";
+import axios from "axios"
 //import axios from "axios";
 //import HeaderM from "@/components/Main/Header.vue"
 //import Body from "@/components/Main/Body.vue"
@@ -45,16 +46,34 @@ export default {
   },
   data() {
     return {
-      account:{
-        username :"",
-        first_name:"",
-        Last_name:"",
-        id:Number
-      }
+      grouplist:[]
     }
   },
   mounted(){
-
+ axios
+        .get("http://127.0.0.1:8000/group/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.grouplist = response.data;
+          console.log(response.data);
+          console.log(this.grouplist);
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+            console.error(err.response.data);
+            console.error(err.response.status);
+            console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });
   },
   methods: {
         submit() {

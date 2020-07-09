@@ -2,16 +2,16 @@
   <div id="course">
     <div class="GO" v-bind:style="{display : displaycourse}">
       <h1 class="course" >All Courses</h1>
-      <GroupCourse v-for="i in courselist" :key="i"  :Idcourse="i.id" :NameCourse="i.name" :NumSession="i.posts.length" :Description="i.description" :Cover="i.cover" />
+      <GroupCourse v-for="i in courselist" :key="i"  :IdCourse="i.id" :NameCourse="i.name" :NumSession="i.posts.length" :Description="i.description" :Cover="i.cover" />
       <!-- <HeaderM/> -->
     </div>
 
     <Bar />
     <div class="mainbar">
       <div class="M" @click="selectM">Main</div>
-      <div class="C">Course</div>
-      <div class="At" @click="selectP">Attachment</div>
-      <div class="As" @click="selectP">Assignment</div>
+      <div class="C" @click="selectC">Course</div>
+      <div class="At" @click="selectAt">Attachment</div>
+      <div class="As" @click="selectAs">Assignment</div>
       <div class="P" @click="selectP">People</div>
     </div>
   </div>
@@ -69,11 +69,22 @@ export default {
       this.displaycourse = !this.displaycourse;
       this.$router.push({ path: "/course/subcourse" });
     },
-    selectM() {
-      this.$router.push({ path: "/main" });
+   selectM() {
+     this.$router.push({ params:{ NameGroup: window.localStorage.getItem("NameGroup") }, name: "main" });
+     // this.$router.push({ path: "/main" });
+    },
+    selectC() {
+      this.$router.push({ path: "/course" });
+    },
+        selectAt() {
+      this.$router.push({ path: "/attachment" });
+    },
+        selectAs() {
+      this.$router.push({ path: "/assignment" });
     },
     selectP() {
-      this.$router.push({ path: "/people" });
+      this.$router.push({ params:{ NameGroup: window.localStorage.getItem("NameGroup") }, name: "people" });
+     // this.$router.push({ path: "/people" });
     },
     isShow() {
       this.show = !this.show;

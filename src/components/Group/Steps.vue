@@ -1,17 +1,63 @@
 <template>
   <div id="steps">
     <div class="imgblock" @click="selectStep">
-      <img class="imggroup" src="@/assets/barten.jpg" />
+      <img class="imggroup" :src="step.cover_file" />
     </div>
     <div class="detail">
-      <p>step 01</p>
-      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+      <p>{{step.name}}</p>
+      <p>{{step.textcontent}}</p>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios"
 export default {
+    data() {
+      return {
+        step:{
+          id:Number,
+          name:"",
+          textcontent:"",
+          link:"",
+          cover_type:Number,
+          cover_file:"",
+          post_id:Number,
+          step_file:""
+        }
+      }
+    },
+    props:{
+      IdStep:Number,
+      Cover:String
+    },
+    mounted() {
+      console.log(this.IdStep)
+      axios
+        .get("http://127.0.0.1:8000/sop/step/"+this.IdStep+"/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.step = response.data;
+          console.log(response.data);
+          console.log(this.step);
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+         //   console.error(err.response.data);
+            console.error(err.response.status);
+       //     console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });
+    },
     methods: {
         selectStep(){
             this.$router.push({ path: "/learning" });
@@ -34,6 +80,7 @@ export default {
   height: 160px;
   left: 0px;
   top: 0px;
+  border: 1px solid black;
 }
 .imgblock {
   position: absolute;
@@ -42,6 +89,7 @@ export default {
   left: 0px;
   top: 0px;
   cursor: pointer;
+  
 }
 .detail {
   position: absolute;

@@ -28,8 +28,8 @@
     <div class="mainbar">
       <div class="M" @click="selectM">Main</div>
       <div class="C" @click="selectC">Course</div>
-      <div class="At" >Attachment</div>
-      <div class="As" @click="selectP">Assignment</div>
+      <div class="At" @click="selectAt" >Attachment</div>
+      <div class="As" @click="selectAs">Assignment</div>
       <div class="P" @click="selectP">People</div>
   </div>
   </div>
@@ -50,11 +50,21 @@ export default {
     };
   },
   methods: {
-    selectM() {
-      this.$router.push({ path: "/main" });
+selectM() {
+   this.$router.push({ name: "main", params:{ NameGroup: window.localStorage.getItem("NameGroup") } });
+     // this.$router.push({ path: "/main" });
     },
     selectC() {
       this.$router.push({ path: "/course" });
+    },
+        selectAt() {
+      this.$router.push({ path: "/attachment" });
+    },
+        selectAs() {
+      this.$router.push({ path: "/assignment" });
+    },
+    selectP() {
+      this.$router.push({ path: "/people" });
     },
     isShowOn() {
       this.show = !this.show;
