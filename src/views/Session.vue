@@ -80,7 +80,7 @@ export default {
           console.log(this.CourseName);
         });
     axios
-        .get("http://127.0.0.1:8000/sop/post/"+this.IdSes+"/",{
+        .get("http://127.0.0.1:8000/sop/session/"+this.IdSes+"/",{
           headers: {
             Authorization: `token ${window.localStorage.getItem("token")}`,
           },
@@ -115,7 +115,8 @@ export default {
             this.$router.push({ path: "/main" });
         },
         selectP(){
-            this.$router.push({ path: "/people" });
+          this.$router.push({ params:{ NameGroup: window.localStorage.getItem("NameGroup") }, name: "people" });
+          //  this.$router.push({ path: "/people" });
         },
     },
 };

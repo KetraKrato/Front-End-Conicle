@@ -11,16 +11,11 @@
         <span class="name">Name</span>
       </div>
       <Member
-        :first_name="group.group_creator.first_name"
-        :last_name="group.group_creator.last_name"
-        :admin="true"
-      />
-      <Member
-        v-for="i in member"
+        v-for="i in group"
         :key="i"
         :first_name="i.first_name"
         :last_name="i.last_name"
-        :admin="false"
+        :admin="i.is_staff"
       />
       <!--  <div class="body">
         <div class="onecourse">
@@ -79,17 +74,17 @@ export default {
       displaylink: "none",
       show: false,
       showlink: false,
-      group: {},
+      group: [],
       member: []
     };
   },
   methods: {
-    selectM() {
+   selectM() {
       this.$router.push({
         params: { NameGroup: window.localStorage.getItem("NameGroup") },
         name: "main"
       });
-      //this.$router.push({ path: "/main" });
+      //  this.$router.push({ path: "/main" });
     },
     selectC() {
       this.$router.push({
@@ -99,13 +94,25 @@ export default {
       //this.$router.push({ path: "/course" });
     },
     selectAt() {
-      this.$router.push({ path: "/attachment" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "attachment"
+      });
+      //  this.$router.push({ path: "/attachment" });
     },
     selectAs() {
-      this.$router.push({ path: "/assignment" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "assignment"
+      });
+      // this.$router.push({ path: "/assignment" });
     },
     selectP() {
-      this.$router.push({ path: "/people" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "people"
+      });
+      //this.$router.push({ path: "/people" });
     },
     isShowOn() {
       this.show = !this.show;
@@ -133,7 +140,7 @@ export default {
 
     //call data admin
     axios
-      .get("http://127.0.0.1:8000/group/" + this.IdGroup + "/", {
+      .get("http://127.0.0.1:8000/group/" + this.IdGroup + "/member/", {
         headers: {
           Authorization: `token ${window.localStorage.getItem("token")}`
         }
@@ -158,7 +165,7 @@ export default {
       });
 
     //call member
-    axios
+  /*  axios
       .get("http://127.0.0.1:8000/group/getmember/" + this.IdGroup + "/", {
         headers: {
           Authorization: `token ${window.localStorage.getItem("token")}`
@@ -181,7 +188,7 @@ export default {
             //    alert("404 not found")
           }
         }
-      });
+      });*/
   }
 };
 </script>

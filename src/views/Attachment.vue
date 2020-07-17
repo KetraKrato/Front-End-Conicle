@@ -51,20 +51,39 @@ export default {
   },
   methods: {
 selectM() {
-   this.$router.push({ name: "main", params:{ NameGroup: window.localStorage.getItem("NameGroup") } });
-     // this.$router.push({ path: "/main" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "main"
+      });
+      //  this.$router.push({ path: "/main" });
     },
     selectC() {
-      this.$router.push({ path: "/course" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "course"
+      });
+      //this.$router.push({ path: "/course" });
     },
-        selectAt() {
-      this.$router.push({ path: "/attachment" });
+    selectAt() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "attachment"
+      });
+      //  this.$router.push({ path: "/attachment" });
     },
-        selectAs() {
-      this.$router.push({ path: "/assignment" });
+    selectAs() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "assignment"
+      });
+      // this.$router.push({ path: "/assignment" });
     },
     selectP() {
-      this.$router.push({ path: "/people" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "people"
+      });
+      //this.$router.push({ path: "/people" });
     },
     isShowOn() {
       this.show = !this.show;

@@ -2,7 +2,7 @@
   <div id="Assignments">
     <div class="assignment">
       <div class="header">All Assignments</div>
-      <div class="box">
+  <!--    <div class="box">
         <div class="post">
           <div class="detail">
             <span class="headdetail">Assignment title 01</span>
@@ -15,12 +15,12 @@
           <div class="des">
             <p>kdiiiwefoasdoifjawoiehfoiadhjfoawhefowdohifuodisfhjhoidsafofidshfjos</p>
           </div>
-          
-            <div v-if="show" class="file">
-              <img />
-              <span class="namefile">photo.png</span>
-              <span class="sizefile">130 kb</span>
-            </div>
+
+          <div v-if="show" class="file">
+            <img />
+            <span class="namefile">photo.png</span>
+            <span class="sizefile">130 kb</span>
+          </div>
         </div>
         <div class="com">
           <div class="commentbox">
@@ -29,51 +29,102 @@
             <span @click="send">Send</span>
           </div>
         </div>
-      </div>
-      <div class></div>
+      </div> -->
+      <AssignmentDetail v-for="(i,index) in assignData" :key="index" :DataAssignment="i"/>
     </div>
+    
     <Bar />
-        <div class="mainbar">
-      <div class="M">Main</div>
+    <div class="mainbar">
+      <div class="M" @click="selectM">Main</div>
       <div class="C" @click="selectC">Course</div>
       <div class="At" @click="selectAt">Attachment</div>
       <div class="As" @click="selectAs">Assignment</div>
-      <div class="P" @click="selectP">People</div> 
+      <div class="P" @click="selectP">People</div>
     </div>
   </div>
 </template>
 
 <script>
 import Bar from "@/components/Bar.vue";
+import AssignmentDetail from "@/components/AssignmentDetail.vue";
+import axios from "axios"
 export default {
-    data() {
-        return {
-            show:true,
-            status:3
-        }
-    },
-  components: {
-    Bar
+  data() {
+    return {
+      show: true,
+      status: 3,
+      assignData:Object,
+      IdGroup:Number,
+    };
   },
+  components: {
+    Bar,AssignmentDetail
+  },
+  mounted(){
+    this.IdGroup = window.localStorage.getItem("IdGroup");
+ axios
+        .get("http://127.0.0.1:8000/group/"+this.IdGroup+"/assignment/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.assignData = response.data;
+          console.log(this.assignData);
+         // console.log(this.grouplist);
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+            console.error(err.response.data);
+            console.error(err.response.status);
+            console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });
+        },
   methods: {
-      send(){},
-      selectM() {
-        this.$router.push({ name: "main", params:{ NameGroup: window.localStorage.getItem("NameGroup") } });
-      //this.$router.push({ path: "/main" });
+    send() {},
+    selectM() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "main"
+      });
+      //  this.$router.push({ path: "/main" });
     },
     selectC() {
-      this.$router.push({ path: "/course" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "course"
+      });
+      //this.$router.push({ path: "/course" });
     },
-        selectAt() {
-      this.$router.push({ path: "/attachment" });
+    selectAt() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "attachment"
+      });
+      //  this.$router.push({ path: "/attachment" });
     },
-        selectAs() {
-      this.$router.push({ path: "/assignment" });
+    selectAs() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "assignment"
+      });
+      // this.$router.push({ path: "/assignment" });
     },
     selectP() {
-      this.$router.push({ path: "/people" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "people"
+      });
+      //this.$router.push({ path: "/people" });
     },
-  },
+  }
 };
 </script>
 
@@ -167,7 +218,6 @@ export default {
   line-height: 17px;
 
   text-align: right;
-   
 }
 .des {
   position: relative;
@@ -182,35 +232,35 @@ export default {
 
   color: #000000;
 }
-.file{
-    position: relative;
-    width:400px;
-    height: 50px;
-    border: 1px solid black;
+.file {
+  position: relative;
+  width: 400px;
+  height: 50px;
+  border: 1px solid black;
 }
-.file img{
-    width: 85px;
-    height: 50px;
+.file img {
+  width: 85px;
+  height: 50px;
 }
-.file .namefile{
-    position: absolute;
-    top:7px;
-    left:110px;
-    font-family: Montserrat;
-font-style: normal;
-font-weight: normal;
-font-size: 14px;
-line-height: 17px;
+.file .namefile {
+  position: absolute;
+  top: 7px;
+  left: 110px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
 }
-.file .sizefile{
-    position: absolute;
-    top:28px;
-    left:110px;
-font-family: Montserrat;
-font-style: normal;
-font-weight: normal;
-font-size: 12px;
-line-height: 15px;
+.file .sizefile {
+  position: absolute;
+  top: 28px;
+  left: 110px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
 }
 .com {
   position: relative;
@@ -253,7 +303,7 @@ line-height: 15px;
   left: 650px;
   top: 30px;
   font-size: 25px;
-/*  border-bottom: 3px solid black;*/
+  /*  border-bottom: 3px solid black;*/
   padding-left: 20px;
   margin-left: 10px;
   margin-right: 10px;

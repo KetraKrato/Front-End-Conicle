@@ -2,8 +2,8 @@
   <div id="course">
     <div class="GO" v-bind:style="{display : displaycourse}">
       <h1 class="course" >All Courses</h1>
-      <GroupCourse v-for="i in courselist" :key="i"  :IdCourse="i.id" :NameCourse="i.name" :NumSession="i.posts.length" :Description="i.description" :Cover="i.cover" />
-      <!-- <HeaderM/> -->
+    <!--  <GroupCourse v-for="i in courselist" :key="i"  :IdCourse="i" :NameCourse="i.name" :NumSession="i.posts.length" :Description="i.description" :Cover="i.cover" /> -->
+      <GroupCourse v-for="i in courselist" :key="i"  :IdCourse="i"  /> 
     </div>
 
     <Bar />
@@ -23,7 +23,8 @@ import GroupCourse from "@/components/Group/GroupCourse.vue";
 import axios from "axios"
 export default {
   components: {
-    Bar,GroupCourse
+    Bar,
+    GroupCourse,
   },
   data() {
     return {
@@ -36,16 +37,17 @@ export default {
   },
 
   mounted(){
+    this.IdGroup = window.localStorage.getItem("IdGroup");
           axios
-        .get("http://127.0.0.1:8000/sop/course/",{
+        .get("http://127.0.0.1:8000/group/"+this.IdGroup+"/",{
           headers: {
             Authorization: `token ${window.localStorage.getItem("token")}`,
           },
         })
         .then((response) => {
-          this.courselist = response.data;
+          this.courselist = response.data.courses;
           console.log(response.data);
-          console.log(this.courselist);
+          console.log(this.courselist.courses);
         })
         .catch((err) => {
           if (err.response) {
@@ -69,22 +71,40 @@ export default {
       this.displaycourse = !this.displaycourse;
       this.$router.push({ path: "/course/subcourse" });
     },
-   selectM() {
-     this.$router.push({ params:{ NameGroup: window.localStorage.getItem("NameGroup") }, name: "main" });
-     // this.$router.push({ path: "/main" });
+  selectM() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "main"
+      });
+      //  this.$router.push({ path: "/main" });
     },
     selectC() {
-      this.$router.push({ path: "/course" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "course"
+      });
+      //this.$router.push({ path: "/course" });
     },
-        selectAt() {
-      this.$router.push({ path: "/attachment" });
+    selectAt() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "attachment"
+      });
+      //  this.$router.push({ path: "/attachment" });
     },
-        selectAs() {
-      this.$router.push({ path: "/assignment" });
+    selectAs() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "assignment"
+      });
+      // this.$router.push({ path: "/assignment" });
     },
     selectP() {
-      this.$router.push({ params:{ NameGroup: window.localStorage.getItem("NameGroup") }, name: "people" });
-     // this.$router.push({ path: "/people" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "people"
+      });
+      //this.$router.push({ path: "/people" });
     },
     isShow() {
       this.show = !this.show;

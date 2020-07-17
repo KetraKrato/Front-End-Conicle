@@ -39,8 +39,8 @@ export default {
       act: false,
       obj: String,
       account: {
-        password: "Ketra13579",
-        email: "testuser02@gmail.com",
+        password: "",
+        email: "",
       },
     };
   },

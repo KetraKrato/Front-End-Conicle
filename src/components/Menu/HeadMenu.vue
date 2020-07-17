@@ -6,7 +6,7 @@
         <span v-html="item[0]"></span></span>
       <button v-on:click="add">+</button> -->
           <div id="chapter">
-            <Chapter v-for="i in Numtitle" :key="i"  :Chaptertitle="i" :NumVideo="NumVideo" v-bind:style="{ display:changeDisplay }" />
+            <Chapter v-for="i in grouplist" :key="i"  :IdGroup="i.id" :NameGroup="i.group_name" v-bind:style="{ display:changeDisplay }" />
             
 
             </div>
@@ -18,33 +18,54 @@
 
 <script>
 import Chapter from '@/components/Menu/Chapter.vue'
+import axios from 'axios'
 export default {
-    
-mounted(){
-
-   },
-   props: {
-       Headertitle : String,
-       Numtitle : {
-         type:Array,
-         default: ()=> ['Chapter1','Chapter2']
-       },
-      NumVideo : {
-         type:Array,
-         default: ()=> []
-       },
-   },
-    data() {
+      data() {
     return { 
       showC1 : false,
       displayC1 :"none" ,
       items:[],
-      item:[]
+      item:[],
+      grouplist:[],
     }
   },
+    
+mounted(){
+ axios
+        .get("http://127.0.0.1:8000/group/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.grouplist = response.data;
+          console.log(response.data);
+          console.log("group");
+          console.log(this.grouplist);
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+            console.error(err.response.data);
+            console.error(err.response.status);
+            console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });
+  },
+   props: {
+       Headertitle : String,
+       DataGroup :Object,
+
+   },
   created(){
     
     },
+    
   computed: {
     changeDisplay(){
           return this.displayC1;    

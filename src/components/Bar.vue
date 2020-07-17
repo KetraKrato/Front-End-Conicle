@@ -7,7 +7,7 @@
                 <div class="linecen"></div>
                 <div class="linebot"></div>
             </div>
-            <span>Group Learning</span>
+            <span @click="selectH" :style="{cursor:'pointer'}">GROUP LEARNING</span>
             <span class="username">{{account.username}}</span>
         </div>
         <div style="margin-top: 30px; color: red; ">
@@ -27,9 +27,7 @@ export default {
     components:{
         Vmenu
     },
-    props:{
-
-    },
+    props:['imgUser'],
     data() {
     return {
             left : -350,
@@ -42,21 +40,24 @@ export default {
         username :"",
         first_name:"",
         Last_name:"",
-        id:Number
+        id:Number,
+        image:"",
       },
     }
 },
-  mounted(){
-          axios
-        .get("http://127.0.0.1:8000/auth/users/me/",{
+updated() {
+  axios
+        .get("http://127.0.0.1:8000/auth/users/"+this.account.id+"/",{
           headers: {
             Authorization: `token ${window.localStorage.getItem("token")}`,
           },
         })
         .then((response) => {
-          this.account = response.data;
+          this.account.image = response.data.image;
+          window.localStorage.setItem("imgUser",this.account.image)
+          window.localStorage.setItem("IdUser",this.account.id)
           console.log(response.data);
-          console.log(this.account);
+          console.log(this.account.image);
         })
         .catch((err) => {
           if (err.response) {
@@ -71,6 +72,37 @@ export default {
             }
           }
         });
+  this.$emit('imgUser',this.account.image)
+},
+  mounted(){
+          axios
+        .get("http://127.0.0.1:8000/auth/users/me/",{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.account = response.data;
+          console.log(response.data);
+          console.log(this.account);
+          console.log(this.account.id);
+
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+            console.error(err.response.data);
+            console.error(err.response.status);
+            console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });
+
+
   },
 methods: {
     openNav(){
@@ -84,6 +116,13 @@ methods: {
                     this.left = 0;
              }   
         },
+    selectH() {
+   /*   this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "main"
+      });*/
+       this.$router.push({ path: "/home" });
+    },
 },
 }
 </script>

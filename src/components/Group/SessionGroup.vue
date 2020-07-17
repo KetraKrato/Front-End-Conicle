@@ -11,7 +11,7 @@
     <div class="textblock">
       <span class="head">{{post.name}}</span>
       <div class="des">
-        <span>{{post.description}}</span>
+        <p>{{post.description}}</p>
       </div>
     </div>
   </div>
@@ -53,9 +53,9 @@ export default {
 
   mounted(){
         console.log(this.IdSession)
-         this.IdSes = this.IdSession;
+        // this.IdSes = this.IdSession;
     axios
-        .get("http://127.0.0.1:8000/sop/post/"+this.IdSes+"/",{
+        .get("http://127.0.0.1:8000/sop/session/"+this.IdSession+"/",{
           headers: {
             Authorization: `token ${window.localStorage.getItem("token")}`,
           },
@@ -93,7 +93,7 @@ export default {
     },
     selectS(){
             window.localStorage.setItem("IdSessione", this.IdSes);
-            this.$router.push({ name: "session", params:{ IdCourse: this.IdCourse,IdSession: this.IdSes} });
+            this.$router.push({ name: "session", params:{ IdCourse: this.IdCourse,IdSession: this.IdSession} });
         },
 
   }
@@ -168,6 +168,8 @@ text-align: center;
   font-weight: normal;
   font-size: 18px;
   line-height: 22px;
+
+
 }
 
 </style>

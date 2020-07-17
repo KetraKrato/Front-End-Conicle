@@ -2,20 +2,18 @@
   <div id="main">
     <div class="box">
       <div class="header">
-        <img class="imggroup" src="@/assets/barten.jpg" />
+        <img class="imggroup" :src="group.group_image" />
         <div class="groupbox">
-          <h1 class="groupname">group 01</h1>
-          <p
-            class="detailgroup"
-          >jfoiejzsdlfjkljnkvasadfvo;jpi nsad;oijvsadvo;ijsadvo;jisdavo;ji;osadijv</p>
+          <h1 class="groupname">{{group.group_name}}</h1>
+          <p class="detailgroup">{{group.group_description}}</p>
         </div>
       </div>
 
       <div class="publicbox">
         <div class="public">
-          <img class="imgpro" src="@/assets/logo.png" />
-          <span class="textpublic">Massage everyone in the group ..</span>
-          
+          <img class="imgpro" :src="imageUser" />
+          <input class="textpublic" type="text" maxlength = "200" placeholder="Massage everyone in the group .." v-model="DataComment.text"/>
+        <span>{{DataComment.text}}</span> 
         </div>
         <div class="publiccom">
           <div class="add" @click="isShow">Add</div>
@@ -46,8 +44,8 @@
         </div>
       </div>
       <div class="posted">Posted</div>
-      <div class="privatebox">
-        <div v-bind:style="{ position: absolute }">
+   <!--   <div class="privatebox">
+        <div v-bind:style="{ position: 'relative' }">
           <div class="private">
             <img class="imgpro" src="@/assets/logo.png" />
             <span class="Owner">Post Owner</span>
@@ -63,8 +61,9 @@
             <button class="send">Send</button>
           </div>
         </div>
-      </div>
-      
+      </div> -->
+    <!--  <Comment :IdComment="groupcomment[0].id" :IdUser="groupcomment[0].user_id" :Text="groupcomment[0].text" :DateCreated="groupcomment[0].date_created" :Files="groupcomment[0].comment_group_files"/> -->
+      <Comment v-for="i in groupcomment" :key="i" :IdComment="i.id" :IdUser="i.user_id" :Text="i.text" :DateCreated="i.date_created" :Files="i.comment_group_files"/>
     </div>
     <Bar />
     <div class="mainbar">
@@ -72,28 +71,140 @@
       <div class="C" @click="selectC">Course</div>
       <div class="At" @click="selectAt">Attachment</div>
       <div class="As" @click="selectAs">Assignment</div>
-      <div class="P" @click="selectP">People</div> 
+      <div class="P" @click="selectP">People</div>
     </div>
   </div>
 </template>
 
 <script>
 import Bar from "@/components/Bar.vue";
+import Comment from "@/components/Comment/Comment.vue";
 import axios from "axios";
 export default {
   components: {
-    Bar
+    Bar,
+    Comment
   },
   data() {
     return {
+      IdGroup: Number,
       display: "none",
       show: false,
       file: "",
-      fileName: ""
+      fileName: "",
+      group: {
+        course: [],
+        data_created: "",
+        date_modified: "",
+        group_creator: {},
+        group_description: "",
+        group_image: "",
+        group_name: "",
+        id: Number,
+        member_count: Number
+      },
+      imageUser: "",
+      groupcomment:{},
+      groupreply:{},
+      fileupload:Object,
+      DataComment:{
+        group_id:Number,
+        text:"",
+        user_id:Number,
+      },
     };
   },
+  mounted() {
+    this.IdGroup = window.localStorage.getItem("IdGroup");
+    this.imageUser = window.localStorage.getItem("imgUser");
+    axios
+      .get("http://127.0.0.1:8000/group/" + this.IdGroup + "/", {
+        headers: {
+          Authorization: `token ${window.localStorage.getItem("token")}`
+        }
+      })
+      .then(response => {
+        this.group = response.data;
+        console.log(response.data);
+        console.log("from main");
+        console.log(this.group);
+      })
+      .catch(err => {
+        if (err.response) {
+          this.change();
+          console.error(err.response.data);
+          console.error(err.response.status);
+          console.error(err.response.headers);
+          if (err.response.status == 400) {
+            //   alert("Email or Password Wrong")
+          } else if (err.response.status == 404) {
+            //    alert("404 not found")
+          }
+        }
+      });
+/*setInterval(()=>{
+  axios
+      .get("http://127.0.0.1:8000/group/"+this.IdGroup+"/comment_group/", {
+        headers: {
+          Authorization: `token ${window.localStorage.getItem("token")}`
+        }
+      })
+      .then(response => {
+        this.groupcomment = response.data;
+        console.log(response.data);
+        console.log("frommaincomment");
+        console.log(this.groupcomment);
+      })
+      .catch(err => {
+        if (err.response) {
+          this.change();
+          console.error(err.response.data);
+          console.error(err.response.status);
+          console.error(err.response.headers);
+          if (err.response.status == 400) {
+            //   alert("Email or Password Wrong")
+          } else if (err.response.status == 404) {
+            //    alert("404 not found")
+          }
+        }
+      });
+},100)*/
+    // call comment group
+    axios
+      .get("http://127.0.0.1:8000/group/"+this.IdGroup+"/comment_group/", {
+        headers: {
+          Authorization: `token ${window.localStorage.getItem("token")}`
+        }
+      })
+      .then(response => {
+        this.groupcomment = response.data;
+        console.log(response.data);
+        console.log("frommaincomment");
+        console.log(this.groupcomment);
+      })
+      .catch(err => {
+        if (err.response) {
+          this.change();
+          console.error(err.response.data);
+          console.error(err.response.status);
+          console.error(err.response.headers);
+          if (err.response.status == 400) {
+            //   alert("Email or Password Wrong")
+          } else if (err.response.status == 404) {
+            //    alert("404 not found")
+          }
+        }
+      });
 
+  },
   methods: {
+/*updateMessage: function () {
+    //  this.message = 'updated'
+    //  console.log(this.$el.textContent) // => 'not updated'
+      this.$nextTick(function () {
+        console.log(this.$el.textContent) // => 'updated'
+      })
+    },*/
     isShow() {
       this.show = !this.show;
       if (this.show == false) {
@@ -105,21 +216,38 @@ export default {
       }
     },
     selectM() {
-      this.$router.push({ params:{ NameGroup: window.localStorage.getItem("NameGroup") }, name: "main" });
-    //  this.$router.push({ path: "/main" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "main"
+      });
+      //  this.$router.push({ path: "/main" });
     },
     selectC() {
-      this.$router.push({ params:{ NameGroup: window.localStorage.getItem("NameGroup") }, name: "course" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "course"
+      });
       //this.$router.push({ path: "/course" });
     },
-        selectAt() {
-      this.$router.push({ path: "/attachment" });
+    selectAt() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "attachment"
+      });
+      //  this.$router.push({ path: "/attachment" });
     },
-        selectAs() {
-      this.$router.push({ path: "/assignment" });
+    selectAs() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "assignment"
+      });
+      // this.$router.push({ path: "/assignment" });
     },
     selectP() {
-      this.$router.push({ params:{ NameGroup: window.localStorage.getItem("NameGroup") }, name: "people" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "people"
+      });
       //this.$router.push({ path: "/people" });
     },
     handleFileUpload(event) {
@@ -127,29 +255,72 @@ export default {
 
       var fileData = event.target.files[0];
       this.fileName = fileData.name;
+      this.fileupload = fileData
       this.isShow();
       console.log(this.fileName);
+      console.log(fileData);
+      
     },
     submitFile() {
+   //   this.DataComment.group_id=this.IdGroup
+   //   this.DataComment.user_id=window.localStorage.getItem("IdUser")
+         this.DataComment.group_id= 1
+      this.DataComment.user_id= 1
+axios
+        .post("http://127.0.0.1:8000/group/comment/", this.DataComment, {
+          headers: {
+             Authorization: `token ${window.localStorage.getItem("token")}`
+          }
+        })
+        .then(function() {
+          console.log("Comment SUCCESS!!");
+        })
+        .catch(err => {
+        if (err.response) {
+          console.error(err.response.data);
+          console.error(err.response.status);
+          console.error(err.response.headers);
+          if (err.response.status == 400) {
+            //   alert("Email or Password Wrong")
+          } else if (err.response.status == 404) {
+            //    alert("404 not found")
+          }
+        }
+      });
+
+
+
+
       let formData = new FormData();
-      for (var i = 0; i < this.files.length; i++) {
+      formData.append('comment_id', 1);
+      formData.append('file', this.fileupload);
+      /*for (var i = 0; i < this.files.length; i++) {
         let file = this.files[i];
 
         formData.append("files[" + i + "]", file);
-      }
+      }*/
 
       axios
-        .post("/multiple-files", formData, {
+        .post("http://127.0.0.1:8000/group/comment/file/", formData, {
           headers: {
-            "Content-Type": "multipart/form-data"
+             Authorization: `token ${window.localStorage.getItem("token")}`
           }
         })
         .then(function() {
           console.log("SUCCESS!!");
         })
-        .catch(function() {
-          console.log("FAILURE!!");
-        });
+        .catch(err => {
+        if (err.response) {
+          console.error(err.response.data);
+          console.error(err.response.status);
+          console.error(err.response.headers);
+          if (err.response.status == 400) {
+            //   alert("Email or Password Wrong")
+          } else if (err.response.status == 404) {
+            //    alert("404 not found")
+          }
+        }
+      });
     }
   }
 };
@@ -195,14 +366,15 @@ export default {
 }
 .publicbox {
   position: relative;
-  padding: 26px;
+  /* padding: 26px;*/
   width: 1460px;
   border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 30px;
 }
-.public{
-  padding-bottom:16px;
+.public {
+  padding: 26px;
+  padding-bottom: 16px;
   border-bottom: 1px solid black;
 }
 .lineincom {
@@ -222,19 +394,25 @@ export default {
 }
 .textpublic {
   position: absolute;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-left: 20px;
+  width: 90%;
+  height: 50px;
+   outline: none;
+   border: none;
+   font-size: 20px;
 }
 .publiccom {
+  padding: 26px;
   position: relative;
-  height: 50px;
+  height: 77px;
 }
 .add {
   position: absolute;
-  margin: 25px;
+
   width: 50px;
-  top: 0px;
-  left: 0px;
+  top: 27px;
+  left: 63px;
   cursor: pointer;
 }
 .filename {
@@ -245,7 +423,7 @@ export default {
 .edit {
   position: absolute;
   display: none;
-  left: 50px;
+  left: 100px;
   top: 50px;
   width: 100px;
   height: 55px;
@@ -265,7 +443,7 @@ export default {
 }
 .bottom {
   position: absolute;
-  right: 0px;
+  right: 32px;
   top: 20px;
   cursor: pointer;
 }
@@ -289,7 +467,7 @@ export default {
 }
 .private {
   position: relative;
-  height: 100px;
+ /* height: 100px;*/
   border-bottom: 1px solid black;
 }
 .imgprivate {
@@ -297,12 +475,12 @@ export default {
 }
 .Owner {
   position: absolute;
-  top:19px;
+  top: 19px;
   left: 100px;
 }
 .Time {
   position: absolute;
-  top:39px;
+  top: 39px;
   left: 100px;
   color: gray;
 }

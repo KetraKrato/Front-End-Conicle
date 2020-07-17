@@ -5,7 +5,7 @@
     </div>
     <div class="textblock">
       <span class="head">{{NameGroup}}</span>
-      <span class="member">{{member.length}} member</span>
+      <span class="member">{{member_count}} member</span>
       <!--   <div class="submenu"><img src="@/assets/menupoint.png" @click="isShow"></div> 
         
         <div class="popup" v-bind:style="{ display: display }">
@@ -25,22 +25,22 @@ import axios from "axios"
 export default {
   data() {
     return {
-      member:{},
+      member_count:Number,
       display: "none",
       show: false
     };
   },
   mounted() {
     axios
-        .get("http://127.0.0.1:8000/group/getmember/"+this.IdGroup+"/",{
+        .get("http://127.0.0.1:8000/group/"+this.IdGroup+"/",{
           headers: {
             Authorization: `token ${window.localStorage.getItem("token")}`,
           },
         })
         .then((response) => {
-          this.member= response.data;
+          this.member_count= response.data.member_count;
           console.log(response.data);
-          console.log("this is member"+JSON.stringify(this.member));
+          console.log("this is member"+JSON.stringify(this.member_count));
         })
         .catch((err) => {
           if (err.response) {

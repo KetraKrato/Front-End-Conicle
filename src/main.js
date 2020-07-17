@@ -9,6 +9,7 @@ import PortalVue from 'portal-vue';
 import 'semantic-ui-css/semantic.min.css';
 import Vue2Filters from "vue2-filters";
 import VS2 from 'vue-script2';
+import moment from 'moment';
 
 
 //import videojssw from 'videojs-resolution-switcher';
@@ -20,6 +21,18 @@ import VS2 from 'vue-script2';
 
 
 Vue.config.productionTip = false
+Vue.filter('formatDateNoTime', function(value) {
+  if (value) {
+    return moment(String(value)).format('DD MMMM YYYY')
+  }
+});
+
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('DD MMMM YYYY, hh:mm A')
+  }
+});
+
 
 Vue.use(PortalVue);
 Vue.use(SemanticUI);

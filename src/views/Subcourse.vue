@@ -15,7 +15,7 @@
       </div>
       <div class="sessionbox">
     <h1>All Sessions in {{course.name}}</h1>
-     <SessionGroup v-for="i in course.posts" :key="i"  :IdCourse = IdCourse :IdSession="course.posts[i-1]"/>
+     <SessionGroup v-for="(i,index) in course.posts" :key="i.length"  :IdCourse = IdCourse :IdSession="course.posts[index]"/>
        <!-- <SessionGroup/>
         <SessionGroup/>
         <SessionGroup/>
@@ -96,22 +96,42 @@ export default {
 
    },
    methods: {
-        selectM(){
-            this.$router.push({ path: "/main" });
-        },
-        selectAt(){
-            this.$router.push({ path: "/attachment" });
-        },
-        selectAs(){
-            this.$router.push({ path: "/main" });
-        },
-        selectP(){
-            this.$router.push({ path: "/people" });
-        },
-        selectC() {
-            this.$router.push({ path: "/course" });
+       selectM() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "main"
+      });
+      //  this.$router.push({ path: "/main" });
     },
-   },
+    selectC() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "course"
+      });
+      //this.$router.push({ path: "/course" });
+    },
+    selectAt() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "attachment"
+      });
+      //  this.$router.push({ path: "/attachment" });
+    },
+    selectAs() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "assignment"
+      });
+      // this.$router.push({ path: "/assignment" });
+    },
+    selectP() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "people"
+      });
+      //this.$router.push({ path: "/people" });
+    },
+    },
 
 }
 </script>
