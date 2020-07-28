@@ -44,8 +44,8 @@ Vue.use(VueRouter)
     component : CreateGroup
   },
   {
-    path:'/learning',
-    name:'Learning',
+    path:'/learning/:NameCourse/:NameSession/:NameStep',
+    name:'learning',
     component : Learning
   },
   {
@@ -65,7 +65,7 @@ Vue.use(VueRouter)
     component : Subcourse
   },
   {
-    path:'/session/:IdCourse/:IdSession',
+    path:'/session/:NameCourse/:NameSession',
     name:'session',
     component : Session,
     props: true

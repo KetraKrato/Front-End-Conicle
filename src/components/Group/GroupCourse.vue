@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+ //import axios from 'axios'
 export default {
   data() {
     return {
@@ -21,38 +21,13 @@ export default {
       show: false,
       displaycourse:"",
       showcourse: true,
-      DataCourse:{},
     };
   },
  mounted() {
-    console.log(this.IdCourse)
-    axios
-        .get("http://127.0.0.1:8000/sop/course/"+this.IdCourse+"/",{
-          headers: {
-            Authorization: `token ${window.localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => {
-          this.DataCourse= response.data;
-          console.log(response.data);
-          console.log(this.DataCourse);
-        })
-        .catch((err) => {
-          if (err.response) {
-            this.change();
-            console.error(err.response.data);
-            console.error(err.response.status);
-            console.error(err.response.headers);
-            if (err.response.status == 400) {
-              //   alert("Email or Password Wrong")
-            } else if (err.response.status == 404) {
-              //    alert("404 not found")
-            }
-          }
-        });
+   
   },
   props: {
-      IdCourse:Number,
+      DataCourse:Object,
    /*   NameCourse:String,
       NumSession:Number,
       Description:String,
@@ -78,10 +53,9 @@ export default {
         this.displaycourse = "";
         console.log(this.showcourse);
       }
+      window.localStorage.setItem("IdCourse", this.DataCourse.id);
       console.log("SelectGroup");
-      console.log(this.IdCourse)
-      window.localStorage.setItem("IdCourse", this.IdCourse);
-      this.$router.push({ name: "subcourse", params:{ NameCourse: this.NameCourse} });
+      this.$router.push({ name: "subcourse", params:{ NameCourse: this.DataCourse.name} });
       //this.$router.push({ path: "/subcourse"});
     }
   }

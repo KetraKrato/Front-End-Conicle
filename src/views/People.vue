@@ -1,7 +1,7 @@
 <template>
   <div id="people">
     <div class="numcourse">
-      <span>Everyone({{member.length+1}})</span>
+      <span>Everyone({{member.length}})</span>
       <!--   <v-if>
         <p class="pluscourse" @click="isShowlink">+ Invite link</p>
       </v-if>-->
@@ -11,10 +11,12 @@
         <span class="name">Name</span>
       </div>
       <Member
-        v-for="i in group"
+        v-for="i in member"
         :key="i"
+        :id="i.id"
         :first_name="i.first_name"
         :last_name="i.last_name"
+        :image="i.image"
         :admin="i.is_staff"
       />
       <!--  <div class="body">
@@ -74,7 +76,6 @@ export default {
       displaylink: "none",
       show: false,
       showlink: false,
-      group: [],
       member: []
     };
   },
@@ -138,7 +139,7 @@ export default {
   mounted() {
     this.IdGroup = window.localStorage.getItem("IdGroup");
 
-    //call data admin
+    //call data member
     axios
       .get("http://127.0.0.1:8000/group/" + this.IdGroup + "/member/", {
         headers: {
@@ -146,9 +147,9 @@ export default {
         }
       })
       .then(response => {
-        this.group = response.data;
+        this.member = response.data;
         console.log(response.data);
-        console.log(this.group);
+        console.log(this.member);
       })
       .catch(err => {
         if (err.response) {

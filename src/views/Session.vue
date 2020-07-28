@@ -1,7 +1,7 @@
 <template>
   <div id="session">
     <div class="subcourse">
-      <h1>All Course > {{CourseName}} > {{post.name}}</h1>
+      <h1><span @click="selectC" :style="{cursor :'pointer'}">All Course</span> > <span @click="selectBack" :style="{cursor :'pointer'}">{{NameCourse}}</span> > {{post.name}}</h1>
       <div class="header">
         <img class="imgcourse" :src="post.cover" />
         <div class="coursebox">
@@ -22,7 +22,7 @@
     <Bar/>
      <div class="mainbar">
       <div class="M" @click="selectM">Main</div>
-      <div class="C">Course</div>
+      <div class="C" @click="selectC">Course</div>
       <div class="At" @click="selectAt">Attachment</div>
       <div class="As" @click="selectAs">Assignment</div>
       <div class="P" @click="selectP">People</div>
@@ -45,6 +45,7 @@ export default {
     return {
       IdCourse:Number,
       CourseName:"",
+      NameSession:"",
       IdSes:Number,
       display: "none",
       show: false,
@@ -66,9 +67,14 @@ export default {
       }
     };
   },
+  created() {
+    this.IdCourse = window.localStorage.getItem("IdCourse")
+  },
     mounted(){
-         this.IdSes= this.$route.params.IdSession; //get IdSession in path
-         this.IdCourse= this.$route.params.IdCourse; //get IdSession in path
+    //     this.NameSession= this.$route.params.NameSession; //get NameSession in path
+         this.NameCourse= this.$route.params.NameCourse; //get NameCoures in path
+         this.IdCourse = window.localStorage.getItem("IdCourse")
+         this.IdSes = window.localStorage.getItem("IdSession")
     axios
         .get("http://127.0.0.1:8000/sop/course/"+this.IdCourse+"/",{
           headers: {
@@ -105,19 +111,44 @@ export default {
         });
    },
     methods: {
-        selectM(){
-            this.$router.push({ path: "/main" });
-        },
-        selectAt(){
-            this.$router.push({ path: "/attachment" });
-        },
-        selectAs(){
-            this.$router.push({ path: "/main" });
-        },
-        selectP(){
-          this.$router.push({ params:{ NameGroup: window.localStorage.getItem("NameGroup") }, name: "people" });
-          //  this.$router.push({ path: "/people" });
-        },
+    selectM() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "main"
+      });
+      //  this.$router.push({ path: "/main" });
+    },
+    selectC() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "course"
+      });
+      //this.$router.push({ path: "/course" });
+    },
+    selectAt() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "attachment"
+      });
+      //  this.$router.push({ path: "/attachment" });
+    },
+    selectAs() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "assignment"
+      });
+      // this.$router.push({ path: "/assignment" });
+    },
+    selectP() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "people"
+      });
+      //this.$router.push({ path: "/people" });
+    },
+    selectBack(){
+      this.$router.push({ name: "subcourse", params:{ NameCourse: this.NameCourse} });
+    }
     },
 };
 </script>

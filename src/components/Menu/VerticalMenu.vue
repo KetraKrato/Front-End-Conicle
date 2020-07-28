@@ -60,15 +60,14 @@ export default {
 <style scoped>
 .home {
   padding: 0;
-  margin: 0;
+  margin: 0px;
   height: 100%;
 }
 .menulist {
   padding: 10px;
-  margin: 0px;
+  margin-top: 87px;
   list-style-type: none;
   background-color: white;
-  border-top: 1px solid black;
   border-right: 1px solid black;
   width: 350px;
   height: 1000px;

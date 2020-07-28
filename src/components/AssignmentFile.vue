@@ -1,8 +1,11 @@
 <template>
             <a :href="pathFile" download>
                 <div class="file">
-              <img src="@/assets/pdf.png" />
-              <span class="namefile">{{nameFile}}</span>
+              <img  v-if="typeFile == 'pdf' " class="profile" src="@/assets/IconFile/PNG/PDF_icon.png" />
+          <img  v-else-if="typeFile == 'jpg' " class="profile" src="@/assets/IconFile/PNG/JPG_icon.png" />
+          <img  v-else-if="typeFile == 'png' " class="profile" src="@/assets/IconFile/PNG/PNG_icon.png" />
+          <img  v-else class="profile" src="@/assets/IconFile/PNG/Notype_icon.png" />
+              <span class="namefile">{{nameFileDemo}}</span>
               <span class="sizefile">{{dataSize}}</span>
                 </div>
             </a>
@@ -15,6 +18,8 @@ export default {
     return {
       num : Number,
       dataSize : "",
+      nameFileDemo :"",
+      typeFile:"",
     }
   },
     props:{
@@ -22,8 +27,13 @@ export default {
         nameFile:String,
         sizeFile:Number,
     },
+    created(){
+      this.checkFiletype()
+    },
     mounted() {
         this.calSize()
+        this.reFileName()
+        
     },
     methods: {
       calSize(){
@@ -38,9 +48,28 @@ export default {
             else{                        
               this.dataSize = String(this.num.toFixed(2))+" B"
             }
-
+      },
+      reFileName(){
+        if(this.nameFile.length >= 35){
+            this.nameFileDemo = this.nameFile.substring(0,35)+"..." 
+        }
+        else{
+          this.nameFileDemo = this.nameFile
+        }
+      },
+      checkFiletype(){
+      var l = this.nameFile.length
+      var i
+      for ( i = 0 ; i<= l;i++){
+        if(this.nameFile.substring(i,i+1)=="."){
+          this.typeFile = this.nameFile.substring(i+1,l)
+          console.log(this.typeFile)
+          break
+        }
       }
+    }
     },
+    
 }
 </script>
 

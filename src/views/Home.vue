@@ -1,7 +1,9 @@
 <template>
   <div class="home">
     <div class="GO">
-      <h1>All Groups</h1>
+      <div class="H1">
+        <h1>All Groups</h1>
+      </div>
       <GroupOwned v-for="i in grouplist" :key="i" :IdGroup="i.id" :NameGroup="i.group_name" :DesGroup="i.group_description" :ImgGroup="i.group_image"/>
    <!--   <GroupOwned />
       <GroupOwned />
@@ -99,14 +101,16 @@ export default {
   position: relative;
   display: block;
   width: 1700px;
+  left: 220px;
   margin-bottom: 50px;
 }
-.GO h1 {
+.GO .H1 {
   position: relative;
   top: 130px;
-  left: 220px;
+
   color: black;
 }
+
 .GJ {
   position: relative;
   display: block;

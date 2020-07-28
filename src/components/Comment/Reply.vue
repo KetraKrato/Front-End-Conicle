@@ -2,19 +2,19 @@
   <div id="Reply">
     <div class="replycomment">
       <div class="DataR">
-        <span class="OwnerR">{{DataUserReply.username}}</span>
+        <span class="OwnerR">{{user.username}}</span>
         <div class="TimeR">{{DateCreatedReply | formatDateNoTime}}</div>
         <p
           class="toppicR"
         >{{TextReply}}</p>
       </div>
-      <img class="imgproR" :src="DataUserReply.image" />
+      <img class="imgproR" :src="user.image" />
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios"
+//import axios from "axios"
 export default {
   data() {
     return {
@@ -26,10 +26,10 @@ export default {
     IdComment : Number,
     DateCreatedReply:String,
     TextReply:String,
-    IdUser:Number,
+    user:Object,
   },
   mounted() {
-    this.Id=1
+  /*  this.Id=1
    // this.IdGroup = window.localStorage.getItem("IdGroup");
    // this.imageUser = window.localStorage.getItem("imgUser");
 axios
@@ -56,7 +56,7 @@ axios
             //    alert("404 not found")
           }
         }
-      });
+      });*/
 },
 };
 </script>

@@ -14,10 +14,16 @@
           <p>{{DataAssignment.description}}</p>
         </div>
         <div class="FieldFile">
-            <div v-if="DataAssignment.assignment_files.length!=0">
-            <AssignmentFile v-for="(i,index) in DataAssignment.assignment_files" :key="i" :pathFile="DataAssignment.assignment_files[index].file.url" :nameFile="DataAssignment.assignment_files[index].file.name" :sizeFile="DataAssignment.assignment_files[index].file.size"/>
-            </div>
-      <!--    <div class="file">
+          <div v-if="DataAssignment.assignment_files.length!=0">
+            <AssignmentFile
+              v-for="(i,index) in DataAssignment.assignment_files"
+              :key="i"
+              :pathFile="DataAssignment.assignment_files[index].file.url"
+              :nameFile="DataAssignment.assignment_files[index].file.name"
+              :sizeFile="DataAssignment.assignment_files[index].file.size"
+            />
+          </div>
+          <!--    <div class="file">
             <a :href="DataAssignment.assignment_files[0].file" download>
               <img src="@/assets/pdf.png" />
               <span class="namefile">File name</span>
@@ -37,14 +43,25 @@
               <span class="namefile">File name</span>
               <span class="sizefile">130 kb</span>
             </a>
-          </div> -->
+          </div>-->
         </div>
       </div>
       <div class="com">
         <div class="commentbox">
-          <input placeholder="Add comment ..." type="text" />
-          <img src="@/assets/attach.png" />
-          <span @click="send()">Send</span>
+          <input placeholder="Add comment ..." type="text" v-model="DataComment.text" />
+          <span>
+            <form>
+              <label class="custom-file-upload">
+                <input type="file" id="file" ref="file" v-on:change="handleFileUpload" />
+                <img
+                  class="fa fa-cloud-upload"
+                  v-if="DataAssignment.allow_file == true"
+                  src="@/assets/attach.png"
+                />
+              </label>
+            </form>
+          </span>
+          <span @click.enter="submitFile()">Send</span>
         </div>
       </div>
     </div>
@@ -52,26 +69,129 @@
 </template>
 
 <script>
-import AssignmentFile from "@/components/AssignmentFile.vue"
+import axios from "axios"
+import AssignmentFile from "@/components/AssignmentFile.vue";
 export default {
   data() {
     return {
       show: true,
       status: 3,
-      time:""
+      time: "",
+      DataComment: {
+        assignment_id:Number,
+        text: "",
+        user_id:"",
+      },
+      respon:{},
     };
   },
-  components:{
-      AssignmentFile,
+  components: {
+    AssignmentFile
   },
   props: {
     DataAssignment: Object
   },
-  mounted(){
-      
-  },
+  mounted() {},
   methods: {
-    send() {}
+    handleFileUpload(event) {
+      this.file = this.$refs.file.files[0];
+
+      var fileData = event.target.files[0];
+      this.fileName = fileData.name;
+      this.fileupload = fileData;
+      this.isShow();
+      console.log(this.fileName);
+      console.log(fileData);
+    },
+        submitFile() {
+     this.DataComment.assignment_id=this.DataAssignment.id  //id Assignment
+     this.DataComment.user_id=window.localStorage.getItem("IdUser")
+       //  this.DataComment.group_id= 1
+    //  this.DataComment.user_id= 1
+axios
+        .post("http://127.0.0.1:8000/group/assignment/work/", this.DataComment, {
+          headers: {
+             Authorization: `token ${window.localStorage.getItem("token")}`
+          }
+        })
+        .then(respon =>{
+          this.respon = respon.data
+          this.DataComment.text = ""
+           this.fileName = ""
+          console.log("Comment SUCCESS!!");
+
+ let formData = new FormData();
+      console.log(this.respon.assignment_work_id);
+      formData.append('assignment_work_id',this.respon.assignment_work_id);
+      formData.append('file', this.fileupload);
+      /*for (var i = 0; i < this.files.length; i++) {
+        let file = this.files[i];
+
+        formData.append("files[" + i + "]", file);
+      }*/
+
+      axios
+        .post("http://127.0.0.1:8000/group/assignment/work/file/", formData, {
+          headers: {
+             Authorization: `token ${window.localStorage.getItem("token")}`
+          }
+        })
+        .then(respon =>{
+          this.respon = respon.data
+          this.fileupload={}
+          this.fileName = ""
+          this.file=null
+          console.log("SUCCESS!!");
+        })
+
+
+        })
+        .catch(err => {
+        if (err.response) {
+          console.error(err.response.data);
+          console.error(err.response.status);
+          console.error(err.response.headers);
+          if (err.response.status == 400) {
+            //   alert("Email or Password Wrong")
+          } else if (err.response.status == 404) {
+            //    alert("404 not found")
+          }
+        }
+      });
+
+
+ /*     let formData = new FormData();
+      console.log(this.respon.id);
+      formData.append('comment_id',this.respon.id);
+      formData.append('file', this.fileupload);
+      /*for (var i = 0; i < this.files.length; i++) {
+        let file = this.files[i];
+
+        formData.append("files[" + i + "]", file);
+      }
+
+      axios
+        .post("http://127.0.0.1:8000/group/comment/file/", formData, {
+          headers: {
+             Authorization: `token ${window.localStorage.getItem("token")}`
+          }
+        })
+        .then(function() {
+          console.log("SUCCESS!!");
+        })
+        .catch(err => {
+        if (err.response) {
+          console.error(err.response.data);
+          console.error(err.response.status);
+          console.error(err.response.headers);
+          if (err.response.status == 400) {
+            //   alert("Email or Password Wrong")
+          } else if (err.response.status == 404) {
+            //    alert("404 not found")
+          }
+        }
+      });*/
+    },
   }
 };
 </script>
@@ -97,7 +217,6 @@ export default {
 .post {
   position: relative;
   width: 1146px;
-  border-bottom: 1px solid black;
   padding-top: 24px;
   padding-left: 40px;
   padding-right: 40px;
@@ -222,6 +341,7 @@ export default {
   padding-left: 40px;
   padding-right: 40px;
   padding-bottom: 16px;
+  border-top: 1px solid black;
 }
 .commentbox {
   position: relative;
@@ -231,6 +351,7 @@ export default {
 }
 .commentbox input {
   position: relative;
+  display: inline-block;
   border: #ffffff;
   outline: none;
   width: 88%;
@@ -239,15 +360,46 @@ export default {
   position: absolute;
   width: 20px;
   height: 20px;
-  right: 90px;
+  top: 0px;
+  right: 100px;
+}
+.commentbox img:hover {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: 100px;
+  cursor: pointer;
 }
 .commentbox span {
   position: absolute;
-  right: 30px;
+  right: 40px;
   font-family: Montserrat;
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
   line-height: 22px;
+}
+.commentbox span:hover {
+  position: absolute;
+  right: 40px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  cursor: pointer;
+}
+form {
+  position: absolute;
+  width: 100%;
+}
+input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  display: block;
 }
 </style>

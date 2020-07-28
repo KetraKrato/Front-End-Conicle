@@ -2,16 +2,24 @@
   <div id="comment">
     <div class="privatebox">
       <div class="private">
-        <img class="imgpro" :src="User.image" />
-        <span class="Owner">{{User.username}}</span>
+        <img class="imgpro" :src="user.image" />
+        <span class="Owner">{{user.username}}</span>
         <div class="Time">{{DateCreated | formatDateNoTime }}</div>
         <p
           class="toppic"
         >{{Text}}</p>
-        <BoxFile/>
+        <div class="FieldFile" v-for="(i,index) in Files" :key="index">
+  <!--         <BoxFile v-for="i in Files" :key="i" :pathFile="i.file.url" :nameFile="i.file.name" :sizeFile="i.file.size"/> -->
+
+          <BoxFile :pathFile="i.file.url" :nameFile="i.file.name" :sizeFile="i.file.size"/>
+
+        </div>
       </div>
-      <Reply v-for="i in DataReply" :key="i" :IdComment="i.IdComment" :DateCreatedReply="i.date_created" :TextReply="i.text" :IdUser="i.user.id"/>
-  <!--    <Reply />
+       <div v-for="(i,index) in DataReply" :key="index">
+          <Reply :IdComment="i.IdComment" :DateCreatedReply="i.date_created" :TextReply="i.text" :user="i.user"></Reply>
+      </div>
+  <!--   <Reply v-for="i in DataReply" :key="i" :IdComment="i.IdComment" :DateCreatedReply="i.date_created" :TextReply="i.text" :IdUser="i.user.id"/>
+      <Reply />
       <Reply />
       <Reply />
       <Reply /> -->
@@ -19,7 +27,7 @@
         <span>
           <input class="commentsbox" type="text" placeholder="Add comment .." v-model="Replyform.text"/>
         </span>
-        <button class="send" @click="submitReply">Send</button>
+        <button class="send" @click="submitReply" >Send</button>
       </div>
     </div>
   </div>
@@ -34,6 +42,7 @@ export default {
     return {
       User:{},
       DataReply:[],
+      UpDataReply:[],
       Reply:"",
       Replyform:{
         user:{
@@ -46,15 +55,18 @@ export default {
       Fileform:{
         comment_id:Number,
         file:"",
-      }
+      },
+      respon:"",
+      polling:null
     }
   },
   components: {
-    Reply,BoxFile
+    Reply,
+    BoxFile
   },
   props:{
     IdComment:Number,
-    IdUser:Number,
+    user:Object,
     Text:String,
     DateCreated:String,
     Files : {
@@ -62,10 +74,16 @@ export default {
                 default: ()=> [],    
             },
   },
+  created(){
+    this.UpdateData()
+  },
+  updated() {
+  
+  },
   mounted() {
    // this.IdGroup = window.localStorage.getItem("IdGroup");
    // this.imageUser = window.localStorage.getItem("imgUser");
-    axios
+   /* axios
       .get("http://127.0.0.1:8000/auth/users/" + this.IdUser + "/", {
         headers: {
           Authorization: `token ${window.localStorage.getItem("token")}`
@@ -89,7 +107,7 @@ export default {
             //    alert("404 not found")
           }
         }
-      });
+      });*/
 
 
       //call data reply from IdComment
@@ -118,20 +136,86 @@ export default {
           }
         }
       });
+
+  /*    setInterval(()=>{axios
+      .get("http://127.0.0.1:8000/group/" + this.IdComment + "/comment_group_reply/", {
+        headers: {
+          Authorization: `token ${window.localStorage.getItem("token")}`
+        }
+      })
+      .then(response => {
+        this.UpDataReply = response.data;
+        console.log(response.data);
+        console.log("ReplyData");
+        console.log(this.UpDataReply);
+          if(this.DataReply != this.UpDataReply){
+          this.DataReply = this.UpDataReply
+      }
+      })
+      .catch(err => {
+        if (err.response) {
+          this.change();
+          console.error(err.response.data);
+          console.error(err.response.status);
+          console.error(err.response.headers);
+          if (err.response.status == 400) {
+            //   alert("Email or Password Wrong")
+          } else if (err.response.status == 404) {
+            //    alert("404 not found")
+          }
+        }
+      });},1000)*/
+
+      
+},
+  beforeDestroy () {
+    console.log("beforeDestroy")
+	clearInterval(this.polling)
 },
 methods: {
+  UpdateData(){
+    this.polling = setInterval(()=>{axios
+      .get("http://127.0.0.1:8000/group/" + this.IdComment + "/comment_group_reply/", {
+        headers: {
+          Authorization: `token ${window.localStorage.getItem("token")}`
+        }
+      })
+      .then(response => {
+        this.UpDataReply = response.data;
+        console.log(response.data);
+        console.log("ReplyData");
+        console.log(this.UpDataReply);
+          if(this.DataReply != this.UpDataReply){
+          this.DataReply = this.UpDataReply
+      }
+      })
+      .catch(err => {
+        if (err.response) {
+          this.change();
+          console.error(err.response.data);
+          console.error(err.response.status);
+          console.error(err.response.headers);
+          if (err.response.status == 400) {
+            //   alert("Email or Password Wrong")
+          } else if (err.response.status == 404) {
+            //    alert("404 not found")
+          }
+        }
+      });},1000)
+  },
   submitReply(){
     this.Replyform.parent_id = this.IdComment
     this.Replyform.email = this.User.email
     this.Replyform.username = this.User.username
-
        axios
       .post("http://127.0.0.1:8000/group/comment/reply/", this.Replyform,{
         headers: {
           Authorization: `token ${window.localStorage.getItem("token")}`
         }
       })
-      .then(function() {
+      .then(respon =>{
+        this.respon = respon
+          this.Replyform.text=""
           console.log("ReplySUCCESS!!");
           if(this.Files.length>0){
             this.submitCommentFile()
@@ -216,6 +300,13 @@ methods: {
   position: relative;
   margin-top: 10px;
   top: 0px;
+}
+.FieldFile {
+  position: relative;
+  width: 450px;
+  content: "";
+  display: inline-block;
+  clear: both;
 }
 .Replay {
   position: relative;

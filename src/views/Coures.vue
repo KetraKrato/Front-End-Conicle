@@ -1,9 +1,17 @@
 <template>
   <div id="course">
     <div class="GO" v-bind:style="{display : displaycourse}">
-      <h1 class="course" >All Courses</h1>
+      <div class="H1">
+          <p class="course" >All Courses</p>
+          <div class="search" v-on:keyup.enter="search">
+            <img src="@/assets/search.png"  />
+            <input placeholder="Search" v-model="DataSearch"/>
+            </div>
+      </div>
+
     <!--  <GroupCourse v-for="i in courselist" :key="i"  :IdCourse="i" :NameCourse="i.name" :NumSession="i.posts.length" :Description="i.description" :Cover="i.cover" /> -->
-      <GroupCourse v-for="i in courselist" :key="i"  :IdCourse="i"  /> 
+      <GroupCourse v-for="i in courselist" :key="i"  :DataCourse="i"  /> 
+ 
     </div>
 
     <Bar />
@@ -32,22 +40,23 @@ export default {
       show: false,
       displaycourse: "block",
       displaysubcourse:"none",
-      courselist:[],
+      courselist:{},
+      DataSearch:"",
     }
   },
-
-  mounted(){
-    this.IdGroup = window.localStorage.getItem("IdGroup");
+  created(){
+ this.IdGroup = window.localStorage.getItem("IdGroup");
           axios
-        .get("http://127.0.0.1:8000/group/"+this.IdGroup+"/",{
+        .get("http://127.0.0.1:8000/group/"+this.IdGroup+"/course/",{
           headers: {
             Authorization: `token ${window.localStorage.getItem("token")}`,
           },
         })
         .then((response) => {
-          this.courselist = response.data.courses;
+          this.courselist = response.data;
           console.log(response.data);
-          console.log(this.courselist.courses);
+          console.log("coureslist")
+          console.log(this.courselist);
         })
         .catch((err) => {
           if (err.response) {
@@ -63,13 +72,20 @@ export default {
           }
         });
   },
+  mounted(){
+   
+  },
+  beforeDestroy () {
+    console.log("beforeDestroy")
+	clearInterval(this.polling)
+},
   methods: {
     callCourse(){
 
     },
     selectcourse() {
       this.displaycourse = !this.displaycourse;
-      this.$router.push({ path: "/course/subcourse" });
+      this.$router.push({ name: "subcourse", params:{ NameCourse: this.NameCourse} });
     },
   selectM() {
       this.$router.push({
@@ -116,6 +132,35 @@ export default {
         console.log(this.show);
       }
     },
+    search(){
+      console.log(this.DataSearch)
+    this.IdGroup = window.localStorage.getItem("IdGroup");
+          axios
+        .get("http://127.0.0.1:8000/group/"+this.IdGroup+"/course/?search="+this.DataSearch,{
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.courselist = response.data;
+          console.log(response.data); 
+          console.log("Search Succ")
+          console.log(this.courselist);
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+            console.error(err.response.data);
+            console.error(err.response.status);
+            console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
+          }
+        });
+  },
   },
 };
 </script>
@@ -126,142 +171,39 @@ export default {
   display: block;
   width: 1700px;
   margin-bottom: 50px;
+  margin-left: -25px;
+
 }
-.GO h1 {
+.GO .H1 {
   position: relative;
   top: 130px;
-  left: 220px;
+  left: 200px;
   color: black;
+  width: 1500px;
+  height: 88px;
 }
-/*.coursebox {
-  position: relative;
-  top: 205px;
-  left: 417px;
-  width: 1146px;
-
-  background: #ffffff;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  border-radius: 5px;
+.GO .H1 .course{
+font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 24px;
+line-height: 29px;
 }
-.numcourse {
+.GO .H1 .search{
   position: absolute;
-  top: 144px;
-  left: 417px;
-  font-size: 28px;
-  width: 1146px;
+  right: -40px;
 }
-.header {
-  position: relative;
-  height: 65px;
-  border-bottom: 1px solid black;
-}
-.header span.name {
+.GO .H1 .search img{
+  width: 20px;
   position: absolute;
-  top: 20px;
-  left: 80px;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 22px;
+  top: 10px;
+  left: 16px;
 }
-.header span.update {
-  position: absolute;
-  top: 20px;
-  right: 80px;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 22px;
+.search input{
+  padding-left: 50px;
+  width: 400px;
+height: 40px;
 }
-.body {
-  position: relative;
-  height: 80px;
-  margin-top: 20px;
-  cursor: pointer;
-}
-img.profile {
-  position: relative;
-  left: 80px;
-  width: 120px;
-  height: 65px;
-  border: 1px solid black;
-}
-.detail {
-  position: absolute;
-  top: 25px;
-  left: 250px;
-
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 22px;
-}
-.time {
-  position: absolute;
-  top: 25px;
-  right: 85px;
-
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 22px;
-}
-
-.editimg {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  width: 31px;
-  height: 31px;
-  /*border: 1px solid black;
-  border-radius: 50%;
-  background: rgb(218, 213, 213);
-}
-
-.editimg img {
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  top: 2.5px;
-  left: 3px;
-  padding: 4px;
-  /*border-radius: 50%;
-}
-
-.edit {
-  position: absolute;
-  display: none;
-  right: -75px;
-  top: 55px;
-  width: 100px;
-  height: 60px;
-  background: #ffffff;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  border-radius: 5px;
-}
-.edit span {
-  position: relative;
-  display: block;
-  background: white;
-  margin: 5%;
-}
-
-.pluscourse {
-  position: absolute;
-  width: 300px;
-  right: 0px;
-  top: 0px;
-  text-align: right;
-
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 22px;
-} */
-
 .mainbar {
   position: absolute;
   top: 0;

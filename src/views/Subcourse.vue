@@ -1,7 +1,7 @@
 <template>
   <div id="subcourse">
       <div class="subcourse">
-            <h1>All Course > {{course.name}}</h1>
+            <h1><span @click="selectC" :style="{cursor :'pointer'}">All Course</span> > {{course.name}}</h1>
         <sui-progress size="small" :percent="percent" />
               <div class="header">
         <img class="imgcourse" :src="course.cover" />
@@ -15,7 +15,7 @@
       </div>
       <div class="sessionbox">
     <h1>All Sessions in {{course.name}}</h1>
-     <SessionGroup v-for="(i,index) in course.posts" :key="i.length"  :IdCourse = IdCourse :IdSession="course.posts[index]"/>
+     <SessionGroup v-for="i in course.posts" :key="i"  :NameCourse = "course.name" :IdSession="i"/>
        <!-- <SessionGroup/>
         <SessionGroup/>
         <SessionGroup/>
@@ -46,25 +46,11 @@ export default {
       return {
           IdCourse:Number,
           percent: 10,
-          course:{
-            id:Number,
-            name:"",
-            description:"",
-            cover:"",
-            publish:Boolean,
-            creator:{
-              username:"",
-              first_name:"",
-              last_name:"",
-              id:Number
-            },
-          posts:[]
+          course:[],
           }
-      }
-  },
+      },
+ 
   beforeCreate(){
-
-
   },
   created(){
     this.IdCourse = window.localStorage.getItem("IdCourse");
@@ -78,6 +64,7 @@ export default {
         })
         .then((response) => {
           this.course = response.data;
+          console.log("this is sub")
           console.log(response.data);
           console.log(this.course);
         })

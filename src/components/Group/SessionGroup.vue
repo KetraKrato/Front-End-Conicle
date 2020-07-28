@@ -47,7 +47,7 @@ export default {
     };
   },
     props: {
-        IdCourse : Number,
+        NameCourse : String,
         IdSession : Number,
   },
 
@@ -92,8 +92,10 @@ export default {
       }
     },
     selectS(){
-            window.localStorage.setItem("IdSessione", this.IdSes);
-            this.$router.push({ name: "session", params:{ IdCourse: this.IdCourse,IdSession: this.IdSession} });
+            window.localStorage.setItem("IdSession", this.IdSession);
+            window.localStorage.setItem("NameSession", this.post.name);
+            window.localStorage.setItem("NameCourse", this.NameCourse);
+            this.$router.push({ name: "session", params:{ NameCourse: this.NameCourse,NameSession: this.post.name} });
         },
 
   }

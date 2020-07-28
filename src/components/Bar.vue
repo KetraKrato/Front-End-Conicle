@@ -9,10 +9,11 @@
             </div>
             <span @click="selectH" :style="{cursor:'pointer'}">GROUP LEARNING</span>
             <span class="username">{{account.username}}</span>
+             <button class="login" type="submit" @click="logout">Logout</button>
         </div>
-        <div style="margin-top: 30px; color: red; ">
+  <!--      <div style="margin-top: 30px; color: red; ">
             #Spy {{ JSON.stringify(account)}}
-        </div>
+        </div> -->
     </div>
     <div class="menusidenav" v-bind:style="{ left:left+'px' }">
         <Vmenu/>
@@ -123,15 +124,23 @@ methods: {
       });*/
        this.$router.push({ path: "/home" });
     },
+    logout(){
+      this.$router.push({ path: "/" });
+    }
 },
 }
 </script>
 
 <style scoped>
  .sidenav{
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        top:0px;
         height: 87px;
         width: 100%;
         background: white;
+         border-bottom: 1px solid black;
 
     }
 #bar{
@@ -139,7 +148,6 @@ methods: {
         top: 0;
         left: 0;
         width: 100%;
-        border-bottom: 1px solid black;
         
     }
     .line{
@@ -196,4 +204,28 @@ methods: {
         width: 250px;
         
     }
+    button.login {
+  position: absolute;
+  background: #ea2427;
+  padding: 14px 10px;
+  top:20px;
+  right: 10%;
+
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.015em;
+
+  border: 6px solid #ea2427;
+  width: 125px;
+  outline: none;
+  color: white;
+  border-radius: 5px;
+  transition: 0.25s;
+  line-height: 0px;
+}
+button:hover {
+  border: 6px solid #f46036;
+  background: #f46036;
+  color: white;
+}
 </style>

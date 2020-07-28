@@ -21,46 +21,47 @@
 </template>
 
 <script>
-import axios from "axios"
+import axios from "axios";
 export default {
   data() {
     return {
-      member_count:Number,
+      member_count: Number,
       display: "none",
-      show: false
+      show: false,
     };
   },
   mounted() {
+
     axios
-        .get("http://127.0.0.1:8000/group/"+this.IdGroup+"/",{
-          headers: {
-            Authorization: `token ${window.localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => {
-          this.member_count= response.data.member_count;
-          console.log(response.data);
-          console.log("this is member"+JSON.stringify(this.member_count));
-        })
-        .catch((err) => {
-          if (err.response) {
-            this.change();
-            console.error(err.response.data);
-            console.error(err.response.status);
-            console.error(err.response.headers);
-            if (err.response.status == 400) {
-              //   alert("Email or Password Wrong")
-            } else if (err.response.status == 404) {
-              //    alert("404 not found")
-            }
+      .get("http://127.0.0.1:8000/group/" + this.IdGroup + "/", {
+        headers: {
+          Authorization: `token ${window.localStorage.getItem("token")}`
+        }
+      })
+      .then(response => {
+        this.member_count = response.data.member_count;
+        console.log(response.data);
+        console.log("this is member" + JSON.stringify(this.member_count));
+      })
+      .catch(err => {
+        if (err.response) {
+          this.change();
+          console.error(err.response.data);
+          console.error(err.response.status);
+          console.error(err.response.headers);
+          if (err.response.status == 400) {
+            //   alert("Email or Password Wrong")
+          } else if (err.response.status == 404) {
+            //    alert("404 not found")
           }
-        });
+        }
+      });
   },
   props: {
-    IdGroup:Number,
-    NameGroup:String,
-    DesGroup:String,
-    ImgGroup:String
+    IdGroup: Number,
+    NameGroup: String,
+    DesGroup: String,
+    ImgGroup: String
   },
   methods: {
     isShow() {
@@ -75,10 +76,13 @@ export default {
     },
     select() {
       console.log("SelectGroup");
-      window.localStorage.setItem("IdGroup",this.IdGroup);
-      window.localStorage.setItem("NameGroup",this.NameGroup);
-      this.$router.push({ params:{ NameGroup: this.NameGroup }, name: "main" });
-    //  this.$router.push({ path: "/main" });
+      window.localStorage.setItem("IdGroup", this.IdGroup);
+      window.localStorage.setItem("NameGroup", this.NameGroup);
+      this.$router.push({
+        params: { NameGroup: this.NameGroup },
+        name: "main"
+      });
+      //  this.$router.push({ path: "/main" });
     }
   }
 };
@@ -95,7 +99,7 @@ export default {
 
   height: 359px;
   top: 130px;
-  left: 210px;
+  left: 0px;
   margin-top: 32px;
   margin-left: 32px;
   cursor: pointer;
