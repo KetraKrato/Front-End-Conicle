@@ -1,16 +1,25 @@
 <template>
   <div id="people">
     <div class="numcourse">
-      <span>Everyone(3)</span>
-      <v-if>
-          <p class="pluscourse" @click="isShowlink">+ Invite link</p>
-      </v-if>
+      <span>Everyone({{member.length}})</span>
+      <!--   <v-if>
+        <p class="pluscourse" @click="isShowlink">+ Invite link</p>
+      </v-if>-->
     </div>
     <div class="coursebox">
       <div class="header">
         <span class="name">Name</span>
       </div>
-      <div class="body">
+      <Member
+        v-for="i in member"
+        :key="i"
+        :id="i.id"
+        :first_name="i.first_name"
+        :last_name="i.last_name"
+        :image="i.image"
+        :admin="i.is_staff"
+      />
+      <!--  <div class="body">
         <div class="onecourse">
           <img class="profile" src="@/assets/school.png" />
           <p class="detail">Firstname Surename</p>
@@ -20,56 +29,91 @@
             <img src="@/assets/edit.png" />
           </div>
         </v-if>
-     <!--   <div class="edit" v-bind:style="{ display: display }">
+           <div class="edit" v-bind:style="{ display: display }">
           <span>Admin</span>
           <span>Instrutor</span>
           <span>Member</span>
           <div class="linesubmenu"></div>
           <span>Delete</span> 
-        </div> -->
+        </div>
       </div>
-        <div class="body">
+      <div class="body">
         <div class="onecourse">
           <img class="profile" src="@/assets/school.png" />
           <p class="detail">Firstname Surename</p>
           <p class="role">Admin</p>
         </div>
-      </div>
-
+      </div>-->
     </div>
     <Bar />
     <div class="mainbar">
       <div class="M" @click="selectM">Main</div>
       <div class="C" @click="selectC">Course</div>
-      <div class="P">People</div>
+      <div class="At" @click="selectAt">Attachment</div>
+      <div class="As" @click="selectAs">Assignment</div>
+      <div class="P" @click="selectP">People</div>
     </div>
-              <div class="editlink" v-bind:style="{ display: displaylink }">
-          <p>Send a invite link.</p>
-          <div class="link">https://www.testpapa.com/</div>
-        </div>
+    <div class="editlink" v-bind:style="{ display: displaylink }">
+      <p>Send a invite link.</p>
+      <div class="link">https://www.testpapa.com/</div>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import Bar from "@/components/Bar.vue";
+import Member from "@/components/Member.vue";
 export default {
   components: {
     Bar,
+    Member
   },
   data() {
     return {
+      IdGroup: Number,
       display: "none",
       displaylink: "none",
       show: false,
       showlink: false,
+      member: []
     };
   },
   methods: {
-    selectM() {
-      this.$router.push({ path: "/main" });
+   selectM() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "main"
+      });
+      //  this.$router.push({ path: "/main" });
     },
     selectC() {
-      this.$router.push({ path: "/course" });
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "course"
+      });
+      //this.$router.push({ path: "/course" });
+    },
+    selectAt() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "attachment"
+      });
+      //  this.$router.push({ path: "/attachment" });
+    },
+    selectAs() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "assignment"
+      });
+      // this.$router.push({ path: "/assignment" });
+    },
+    selectP() {
+      this.$router.push({
+        params: { NameGroup: window.localStorage.getItem("NameGroup") },
+        name: "people"
+      });
+      //this.$router.push({ path: "/people" });
     },
     isShowOn() {
       this.show = !this.show;
@@ -90,8 +134,63 @@ export default {
         this.displaylink = "block";
         console.log(this.showlink);
       }
-    },
+    }
   },
+  mounted() {
+    this.IdGroup = window.localStorage.getItem("IdGroup");
+
+    //call data member
+    axios
+      .get("http://127.0.0.1:8000/group/" + this.IdGroup + "/member/", {
+        headers: {
+          Authorization: `token ${window.localStorage.getItem("token")}`
+        }
+      })
+      .then(response => {
+        this.member = response.data;
+        console.log(response.data);
+        console.log(this.member);
+      })
+      .catch(err => {
+        if (err.response) {
+          this.change();
+          console.error(err.response.data);
+          console.error(err.response.status);
+          console.error(err.response.headers);
+          if (err.response.status == 400) {
+            //   alert("Email or Password Wrong")
+          } else if (err.response.status == 404) {
+            //    alert("404 not found")
+          }
+        }
+      });
+
+    //call member
+  /*  axios
+      .get("http://127.0.0.1:8000/group/getmember/" + this.IdGroup + "/", {
+        headers: {
+          Authorization: `token ${window.localStorage.getItem("token")}`
+        }
+      })
+      .then(response => {
+        this.member = response.data;
+        console.log(response.data);
+        console.log(this.member);
+      })
+      .catch(err => {
+        if (err.response) {
+          this.change();
+          console.error(err.response.data);
+          console.error(err.response.status);
+          console.error(err.response.headers);
+          if (err.response.status == 400) {
+            //   alert("Email or Password Wrong")
+          } else if (err.response.status == 404) {
+            //    alert("404 not found")
+          }
+        }
+      });*/
+  }
 };
 </script>
 
@@ -117,13 +216,13 @@ export default {
 }
 p.pluscourse {
   position: absolute;
-    padding-top: 12px;
-    width: 180px;
-    height: 45px;
+  padding-top: 12px;
+  width: 180px;
+  height: 45px;
   right: 0px;
   top: 0px;
   text-align: center;
-    background: rgb(189, 188, 188);
+  background: rgb(189, 188, 188);
   font-family: Montserrat;
   font-style: normal;
   font-weight: 500;
@@ -234,70 +333,96 @@ img.profile {
   background: black;
 }
 
-.editlink{
-    position: absolute;
-width: 400px;
-height: 96px;
-right: 150px;
-top: 180px;
-background: white;
-      border: 1px solid #000000;
+.editlink {
+  position: absolute;
+  width: 400px;
+  height: 96px;
+  right: 150px;
+  top: 180px;
+  background: white;
+  border: 1px solid #000000;
   box-sizing: border-box;
   border-radius: 5px;
 }
 
-.editlink p{
-    font-family: Montserrat;
-font-style: normal;
-font-weight: bold;
-font-size: 18px;
-line-height: 22px;
-text-align: center;
-padding-top: 15px;
+.editlink p {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  padding-top: 15px;
 }
 
-.editlink .link{
-text-align: center;
-font-style: normal;
-font-weight: normal;
-font-size: 18px;
-line-height: 22px;
+.editlink .link {
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
 }
 .mainbar {
   position: absolute;
   top: 0;
 }
 .M {
-  position: absolute;
+  position: fixed;
   width: 100px;
   height: 50px;
-  left: 800px;
+  left: 650px;
   top: 30px;
   font-size: 25px;
-  /*    border-bottom: 3px solid black;*/
+  /* border-bottom: 3px solid black;*/
   padding-left: 20px;
   margin-left: 10px;
   margin-right: 10px;
   cursor: pointer;
 }
 .C {
-  position: absolute;
+  position: fixed;
   width: 100px;
   height: 50px;
-  left: 900px;
+  left: 750px;
   top: 30px;
   font-size: 25px;
-  /*  border-bottom: 3px solid black;*/
+  /*     border-bottom: 3px solid black;*/
+  padding-left: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.At {
+  position: fixed;
+  width: 100px;
+  height: 50px;
+  left: 850px;
+  top: 30px;
+  font-size: 25px;
+  /*     border-bottom: 3px solid black;*/
+  padding-left: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.As {
+  position: fixed;
+  width: 100px;
+  height: 50px;
+  left: 1000px;
+  top: 30px;
+  font-size: 25px;
+  /*     border-bottom: 3px solid black;*/
   padding-left: 10px;
   margin-left: 10px;
   margin-right: 10px;
   cursor: pointer;
 }
 .P {
-  position: absolute;
+  position: fixed;
   width: 100px;
   height: 50px;
-  left: 1000px;
+  left: 1150px;
   top: 30px;
   font-size: 25px;
   padding-left: 10px;
