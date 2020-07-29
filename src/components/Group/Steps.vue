@@ -6,8 +6,8 @@
     <div class="detail">
       <p>{{step.name}}</p>
       <p>{{step.textcontent}}</p>
-      <img class="imgcomment" src="@/assets/comment.png" />
-      <p class="numcomment">{{groupcommentstep.length}}</p>
+   <!--   <img class="imgcomment" src="@/assets/comment.png" />
+      <p class="numcomment">{{groupcommentstep.length}}</p> -->
     </div>
   </div>
 </template>

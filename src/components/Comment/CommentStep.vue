@@ -5,124 +5,106 @@
         <img class="imgpro" :src="User.image" />
         <span class="Owner">{{User.username}}</span>
         <div class="Time">{{DateCreated | formatDateNoTime }}</div>
-        <p
-          class="toppic"
-        >{{Text}}</p>
+    <!--    <div v-if="IduserC==Iduser">
+          <img class="delete" src="@/assets/more.png" @click="showConfirmm" :style="{cursor : 'pointer'}" />
+        </div> -->
+        <p class="toppic">{{Text}}</p>
         <div class="FieldFile" v-for="(i,index) in Files" :key="index">
-  <!--         <BoxFile v-for="i in Files" :key="i" :pathFile="i.file.url" :nameFile="i.file.name" :sizeFile="i.file.size"/> -->
+          <!--         <BoxFile v-for="i in Files" :key="i" :pathFile="i.file.url" :nameFile="i.file.name" :sizeFile="i.file.size"/> -->
 
-          <BoxFile :pathFile="i.file.url" :nameFile="i.file.name" :sizeFile="i.file.size"/>
-
+          <BoxFile :pathFile="i.file.url" :nameFile="i.file.name" :sizeFile="i.file.size" />
         </div>
       </div>
-       <div v-for="(i,index) in DataReply" :key="index">
-          <Reply :IdComment="i.IdComment" :DateCreatedReply="i.date_created" :TextReply="i.text" :user="i.user"></Reply>
+      <div v-for="(i,index) in DataReply" :key="index">
+        <ReplyStep
+          :IdComment="i.IdComment"
+          :DateCreatedReply="i.date_created"
+          :TextReply="i.text"
+          :user="i.user"
+        ></ReplyStep>
       </div>
-  <!--   <Reply v-for="i in DataReply" :key="i" :IdComment="i.IdComment" :DateCreatedReply="i.date_created" :TextReply="i.text" :IdUser="i.user.id"/>
-      <Reply />
-      <Reply />
-      <Reply />
-      <Reply /> -->
       <div class="Replay">
         <span>
-          <input class="commentsbox" type="text" placeholder="Add comment .." v-model="Replyform.text"/>
+          <input
+            class="commentsbox"
+            type="text"
+            placeholder="Add comment .."
+            v-model="Replyform.text"
+          />
         </span>
-        <button class="send" @click="submitReply" >Send</button>
+        <button class="send" @click="submitReply">Send</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Reply from "@/components/Comment/Reply.vue";
-import BoxFile from "@/components/AssignmentFile.vue"
-import axios from "axios"
+import ReplyStep from "@/components/Comment/ReplyStep.vue";
+import BoxFile from "@/components/AssignmentFile.vue";
+import axios from "axios";
 export default {
   data() {
     return {
-      DataReply:[],
-      UpDataReply:[],
-      Reply:"",
-      Replyform:{
-        user:{
-            email:"",
-            username:""
+      DataReply: [],
+      UpDataReply: [],
+      Reply: "",
+      Replyform: {
+        user: {
+          email: "",
+          username: "",
         },
-        parent_id:Number,
-        text:""
+        parent_id: Number,
+        text: "",
       },
-      Fileform:{
-        comment_id:Number,
-        file:"",
+      Fileform: {
+        comment_id: Number,
+        file: "",
       },
-      respon:"",
-      polling:null
-    }
+      respon: "",
+      polling: null,
+    };
   },
   components: {
-    Reply,
-    BoxFile
+    ReplyStep,
+    BoxFile,
   },
-  props:{
-    IdComment:Number,
-    User:Number,
-    Text:String,
-    DateCreated:String,
-    Files : {
-                  type:Array,
-                default: ()=> [],    
-            },
+  props: {
+    IdComment: Number,
+    User: Number,
+    Text: String,
+    DateCreated: String,
+    Files: {
+      type: Array,
+      default: () => [],
+    },
   },
-  created(){
-    this.UpdateData()
+  created() {
+    this.UpdateData();
   },
-  updated() {
-  
-  },
+  updated() {},
   mounted() {
-   // this.IdGroup = window.localStorage.getItem("IdGroup");
-   // this.imageUser = window.localStorage.getItem("imgUser");
- /*   axios
-      .get("http://127.0.0.1:8000/auth/users/" + this.IdUser + "/", {
-        headers: {
-          Authorization: `token ${window.localStorage.getItem("token")}`
-        }
-      })
-      .then(response => {
-        this.User = response.data;
-        console.log(response.data);
-        console.log("fromcommentUser");
-        console.log(this.User);
-      })
-      .catch(err => {
-        if (err.response) {
-          this.change();
-          console.error(err.response.data);
-          console.error(err.response.status);
-          console.error(err.response.headers);
-          if (err.response.status == 400) {
-            //   alert("Email or Password Wrong")
-          } else if (err.response.status == 404) {
-            //    alert("404 not found")
-          }
-        }
-      });*/
+    // this.IdGroup = window.localStorage.getItem("IdGroup");
+    // this.imageUser = window.localStorage.getItem("imgUser");
 
-
-      //call data reply from IdComment
-          axios
-      .get("http://127.0.0.1:8000/group/" + this.IdComment + "/comment_group_reply/", {
-        headers: {
-          Authorization: `token ${window.localStorage.getItem("token")}`
+    //call data reply from IdComment
+    axios
+      .get(
+        "http://127.0.0.1:8000/group/" +
+          this.IdComment +
+          "/comment_step_reply/",
+        {
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
         }
-      })
-      .then(response => {
+      )
+      .then((response) => {
         this.DataReply = response.data;
         console.log(response.data);
         console.log("ReplyData");
         console.log(this.DataReply);
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.response) {
           this.change();
           console.error(err.response.data);
@@ -135,134 +117,158 @@ export default {
           }
         }
       });
-
-      setInterval(()=>{axios
-      .get("http://127.0.0.1:8000/group/" + this.IdComment + "/comment_step_reply/", {
-        headers: {
-          Authorization: `token ${window.localStorage.getItem("token")}`
-        }
-      })
-      .then(response => {
-        this.UpDataReply = response.data;
-        console.log(response.data);
-        console.log("ReplyData");
-        console.log(this.UpDataReply);
-          if(this.DataReply != this.UpDataReply){
-          this.DataReply = this.UpDataReply
-      }
-      })
-      .catch(err => {
-        if (err.response) {
-          this.change();
-          console.error(err.response.data);
-          console.error(err.response.status);
-          console.error(err.response.headers);
-          if (err.response.status == 400) {
-            //   alert("Email or Password Wrong")
-          } else if (err.response.status == 404) {
-            //    alert("404 not found")
-          }
-        }
-      });},1000)
-
-      
-},
-  beforeDestroy () {
-    console.log("beforeDestroy")
-	clearInterval(this.polling)
-},
-methods: {
-  UpdateData(){
-    this.polling = setInterval(()=>{axios
-      .get("http://127.0.0.1:8000/group/" + this.IdComment + "/comment_step_reply/", {
-        headers: {
-          Authorization: `token ${window.localStorage.getItem("token")}`
-        }
-      })
-      .then(response => {
-        this.UpDataReply = response.data;
-        console.log(response.data);
-        console.log("ReplyData");
-        console.log(this.UpDataReply);
-          if(this.DataReply != this.UpDataReply){
-          this.DataReply = this.UpDataReply
-      }
-      })
-      .catch(err => {
-        if (err.response) {
-          this.change();
-          console.error(err.response.data);
-          console.error(err.response.status);
-          console.error(err.response.headers);
-          if (err.response.status == 400) {
-            //   alert("Email or Password Wrong")
-          } else if (err.response.status == 404) {
-            //    alert("404 not found")
-          }
-        }
-      });},1000)
   },
-  submitReply(){
-    this.Replyform.parent_id = this.IdComment
-    this.Replyform.email = this.User.email
-    this.Replyform.username = this.User.username
-       axios
-      .post("http://127.0.0.1:8000/group/comment/step/reply/", this.Replyform,{
-        headers: {
-          Authorization: `token ${window.localStorage.getItem("token")}`
-        }
-      })
-      .then(respon =>{
-        this.respon = respon
-          this.Replyform.text=""
+  beforeDestroy() {
+    console.log("beforeDestroy");
+    clearInterval(this.polling);
+  },
+  methods: {
+    UpdateData() {
+      this.polling = setInterval(() => {
+        axios
+          .get(
+            "http://127.0.0.1:8000/group/" +
+              this.IdComment +
+              "/comment_step_reply/",
+            {
+              headers: {
+                Authorization: `token ${window.localStorage.getItem("token")}`,
+              },
+            }
+          )
+          .then((response) => {
+            this.UpDataReply = response.data;
+            console.log(response.data);
+            console.log("ReplyData");
+            console.log(this.UpDataReply);
+            if (this.DataReply != this.UpDataReply) {
+              this.DataReply = this.UpDataReply;
+            }
+          })
+          .catch((err) => {
+            if (err.response) {
+              this.change();
+              console.error(err.response.data);
+              console.error(err.response.status);
+              console.error(err.response.headers);
+              if (err.response.status == 400) {
+                //   alert("Email or Password Wrong")
+              } else if (err.response.status == 404) {
+                //    alert("404 not found")
+              }
+            }
+          });
+      }, 5000);
+    },
+    submitReply() {
+      this.Replyform.parent_id = this.IdComment;
+      this.Replyform.email = this.User.email;
+      this.Replyform.username = this.User.username;
+      axios
+        .post(
+          "http://127.0.0.1:8000/group/comment/step/reply/",
+          this.Replyform,
+          {
+            headers: {
+              Authorization: `token ${window.localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((respon) => {
+          this.respon = respon;
+          this.Replyform.text = "";
           console.log("ReplySUCCESS!!");
-          if(this.Files.length>0){
-            this.submitCommentFile()
+          if (this.Files.length > 0) {
+            this.submitCommentFile();
           }
         })
-      .catch(err => {
-        if (err.response) {
-          this.change();
-          console.error(err.response.data);
-          console.error(err.response.status);
-          console.error(err.response.headers);
-          if (err.response.status == 400) {
-            //   alert("Email or Password Wrong")
-          } else if (err.response.status == 404) {
-            //    alert("404 not found")
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+            console.error(err.response.data);
+            console.error(err.response.status);
+            console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
           }
-        }
-      });
-  },
-  submitCommentFile(){
-    this.Fileform.comment_id = this.IdComment
-    axios
-      .post("http://127.0.0.1:8000/group/comment/file/", this.Fileform,{
-        headers: {
-          Authorization: `token ${window.localStorage.getItem("token")}`
-        }
-      })
-      .then(function() {
+        });
+    },
+    submitCommentFile() {
+      this.Fileform.comment_id = this.IdComment;
+      axios
+        .post("http://127.0.0.1:8000/group/comment/file/", this.Fileform, {
+          headers: {
+            Authorization: `token ${window.localStorage.getItem("token")}`,
+          },
+        })
+        .then(function () {
           console.log("FileSUCCESS!!");
         })
-      .catch(err => {
-        if (err.response) {
-          this.change();
-          console.error(err.response.data);
-          console.error(err.response.status);
-          console.error(err.response.headers);
-          if (err.response.status == 400) {
-            //   alert("Email or Password Wrong")
-          } else if (err.response.status == 404) {
-            //    alert("404 not found")
+        .catch((err) => {
+          if (err.response) {
+            this.change();
+            console.error(err.response.data);
+            console.error(err.response.status);
+            console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
           }
-        }
-      });
-  }
-},
-}
-
-
+        });
+    },
+    showConfirmm() {
+      const options = {
+        title: "Confirm Delete",
+        okLabel: "Delete",
+        cancelLabel: "Cancle",
+      };
+      this.$dialogs
+        .confirm("Are you sure to delete CommentStep?", options)
+        .then((res) => {
+          console.log(res); // {ok: true|false|undefined}
+          if (res.ok == true) {
+            axios
+              .delete(
+                "http://127.0.0.1:8000/group/comment/step/" +
+                  this.IdComment +
+                  "/",
+                {
+                  headers: {
+                    Authorization: `token ${window.localStorage.getItem(
+                      "token"
+                    )}`,
+                  },
+                }
+              )
+              .then((response) => {
+                this.DataReply = response.data;
+                console.log(response.data);
+                console.log("ReplyData");
+                console.log(this.DataReply);
+              })
+              .catch((err) => {
+                if (err.response) {
+                  this.change();
+                  console.error(err.response.data);
+                  console.error(err.response.status);
+                  console.error(err.response.headers);
+                  if (err.response.status == 400) {
+                    //   alert("Email or Password Wrong")
+                  } else if (err.response.status == 404) {
+                    //    alert("404 not found")
+                  }
+                }
+              });
+          }
+        });
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -370,5 +376,25 @@ methods: {
   position: absolute;
   top: 20px;
   left: 110px;
+}
+.delete {
+  position: absolute;
+  width: 20px;
+  top: 26px;
+  right: 26px;
+  transform: rotate(90deg);
+}
+button.send{
+  background: white;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.015em;
+  width: 100px;
+  height: 20px;
+  border:none;
+  width: 125px;
+  outline: none;
+  transition: 0.25s;
+  line-height: 0px;
 }
 </style>

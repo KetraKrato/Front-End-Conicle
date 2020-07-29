@@ -54,8 +54,8 @@ export default {
   data() {
     return {
       users: {  
-          password: "Ketra13579",
-          email: "testuser@gmail.com",
+          password: "loiho26121",
+          email: "ketra2541@gmail.com",
 
       },
       token: localStorage.getItem("token") || null,
@@ -81,8 +81,8 @@ export default {
         })
          .then((response) => {
         if (response.data.is_staff == true) {
-          this.$router.push({ path: "/groupmanage" });
-        
+          //this.$router.push({ path: "/groupmanage" });
+          this.$router.push({ path: "/homemember" });
         } else if(response.data.is_staff == false){
           this.$router.push({ path: "/homemember" });
       

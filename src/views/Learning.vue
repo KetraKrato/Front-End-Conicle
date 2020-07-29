@@ -109,7 +109,7 @@
       </div>
       <div class="line"></div>
       <div class="comments">
-        <h3>1 Comments</h3>
+        <h3>{{groupcommentstep.length}} Comments</h3>
         <div class="publicbox">
           <!--  <div class="public">
             <img class="imgpublic" src="@/assets/logo.png" />
@@ -148,28 +148,11 @@
               </form>
             </div>-->
             <div class="bottom">
-              <sui-button positive size="medium" @click="submitFile">Post</sui-button>
+              <button class="post" @click="submitFile">Post</button>
             </div>
           </div>
         </div>
 
-        <!--    <div class="privatebox">
-          <div v-bind:style="{ position: absolute }">
-            <div class="private">
-              <img class="imgprivate" src="@/assets/logo.png" />
-              <span class="Owner">Post Owner</span>
-              <div class="Time">01 June 2020</div>
-              <p
-                class="toppic"
-              >fsdfsdfsdfsdfsdfssdflkojipoiwepoirflkjsdjofsd;ljifasfe;jewo;ipjfwe;oflijwefj;oipkdlsjf;ajweifjdfsdfsdf</p>
-            </div>
-            <div class="Replay">
-              <span>Add comment ..</span>
-              <button class="send">Send</button>
-            </div>
-          </div>
-          
-        </div>-->
         <div v-for="(i,index) in groupcommentstep" :key="index" class="CommentStepBox">
           <CommentStep
             :IdComment="i.id"
@@ -212,7 +195,7 @@ export default {
       Session: {},
       Sessionlength: Number,
       Step: {},
-      groupcommentstep: {},
+      groupcommentstep: [],
       upgroupcommentstep: {},
       DataCommentStep: {
         group_id: Number,
@@ -302,7 +285,6 @@ export default {
       })
       .catch((err) => {
         if (err.response) {
-          this.change();
           console.error(err.response.data);
           console.error(err.response.status);
           console.error(err.response.headers);
@@ -489,6 +471,8 @@ export default {
       });
       location.reload();
     },
+    selectC(){},
+    
   },
   beforeDestroy() {
     console.log("beforeDestroy");
@@ -687,5 +671,21 @@ export default {
   left: 1020px;
   width: 75px;
   transition: visibility 0s, opacity 0.2s linear;
+}
+button.post{
+  background: black;
+  color: white;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.015em;
+  width: 100px;
+  height: 35px;
+  border:none;
+  width: 125px;
+  outline: none;
+  transition: 0.25s;
+  line-height: 0px;
+  border-radius: 5px;
+  margin-right: 10px;
 }
 </style>

@@ -46,6 +46,7 @@
           </div>-->
         </div>
       </div>
+      <AssignmentWork/>
       <div class="com">
         <div class="commentbox">
           <input placeholder="Add comment ..." type="text" v-model="DataComment.text" />
@@ -69,8 +70,9 @@
 </template>
 
 <script>
-import axios from "axios"
+import axios from "axios";
 import AssignmentFile from "@/components/AssignmentFile.vue";
+import AssignmentWork from "@/components/Comment/AssignmentWork.vue"
 export default {
   data() {
     return {
@@ -78,89 +80,117 @@ export default {
       status: 3,
       time: "",
       DataComment: {
-        assignment_id:Number,
+        assignment_id: 1,
         text: "",
-        user_id:"",
+        user:Object,
+        user_id: 2,
       },
-      respon:{},
+      respon: {},
     };
   },
   components: {
-    AssignmentFile
+    AssignmentFile,AssignmentWork
   },
   props: {
-    DataAssignment: Object
+    DataAssignment: Object,
   },
-  mounted() {},
+  mounted() {
+    
+    this.DataComment.assignment_id = this.DataAssignment.id; //id Assignment
+    this.DataComment.user_id = parseInt(window.localStorage.getItem("IdUser"));
+    console.log("check");
+    console.log(this.DataComment.assignment_id);
+    console.log(this.DataComment.user_id);
+    axios
+            .get(
+              "http://127.0.0.1:8000/auth/users/"+this.DataComment.user_id+"/",
+              {
+                headers: {
+                  Authorization: `token ${window.localStorage.getItem(
+                    "token"
+                  )}`,
+                },
+              }
+            )
+            .then((respon) => {
+              this.DataComment.user = respon.data;
+              console.log("SUCCESS Data User!!");
+            });
+  },
   methods: {
     handleFileUpload(event) {
       this.file = this.$refs.file.files[0];
-
       var fileData = event.target.files[0];
       this.fileName = fileData.name;
       this.fileupload = fileData;
-      this.isShow();
+      // this.isShow();
       console.log(this.fileName);
       console.log(fileData);
     },
-        submitFile() {
-     this.DataComment.assignment_id=this.DataAssignment.id  //id Assignment
-     this.DataComment.user_id=window.localStorage.getItem("IdUser")
-       //  this.DataComment.group_id= 1
-    //  this.DataComment.user_id= 1
-axios
-        .post("http://127.0.0.1:8000/group/assignment/work/", this.DataComment, {
-          headers: {
-             Authorization: `token ${window.localStorage.getItem("token")}`
+    submitFile() {
+      //  this.DataComment.group_id= 1
+      //  this.DataComment.user_id= 1
+      console.log(this.DataComment)
+      axios
+        .post(
+          "http://127.0.0.1:8000/group/assignment/work/",
+          this.DataComment,
+          {
+            headers: {
+              Authorization: `token ${window.localStorage.getItem("token")}`,
+            },
           }
-        })
-        .then(respon =>{
-          this.respon = respon.data
-          this.DataComment.text = ""
-           this.fileName = ""
+        )
+        .then((respon) => {
+          this.respon = respon.data;
+          this.DataComment.text = "";
+          this.fileName = "";
           console.log("Comment SUCCESS!!");
 
- let formData = new FormData();
-      console.log(this.respon.assignment_work_id);
-      formData.append('assignment_work_id',this.respon.assignment_work_id);
-      formData.append('file', this.fileupload);
-      /*for (var i = 0; i < this.files.length; i++) {
+          let formData = new FormData();
+          console.log(this.respon.assignment_work_id);
+          formData.append("assignment_work_id", this.respon.assignment_work_id);
+          formData.append("file", this.fileupload);
+          /*for (var i = 0; i < this.files.length; i++) {
         let file = this.files[i];
 
         formData.append("files[" + i + "]", file);
       }*/
 
-      axios
-        .post("http://127.0.0.1:8000/group/assignment/work/file/", formData, {
-          headers: {
-             Authorization: `token ${window.localStorage.getItem("token")}`
+          axios
+            .post(
+              "http://127.0.0.1:8000/group/assignment/work/file/",
+              formData,
+              {
+                headers: {
+                  Authorization: `token ${window.localStorage.getItem(
+                    "token"
+                  )}`,
+                },
+              }
+            )
+            .then((respon) => {
+              this.respon = respon.data;
+              this.fileupload = {};
+              this.fileName = "";
+              this.file = null;
+              console.log("SUCCESS!!");
+            });
+        })
+        .catch((err) => {
+          if (err.response) {
+            console.error(err.response.data);
+            console.error(err.response.status);
+            console.error(err.response.headers);
+            if (err.response.status == 400) {
+              //   alert("Email or Password Wrong")
+            } else if (err.response.status == 404) {
+              //    alert("404 not found")
+            }
           }
-        })
-        .then(respon =>{
-          this.respon = respon.data
-          this.fileupload={}
-          this.fileName = ""
-          this.file=null
-          console.log("SUCCESS!!");
-        })
+        });
 
-
-        })
-        .catch(err => {
-        if (err.response) {
-          console.error(err.response.data);
-          console.error(err.response.status);
-          console.error(err.response.headers);
-          if (err.response.status == 400) {
-            //   alert("Email or Password Wrong")
-          } else if (err.response.status == 404) {
-            //    alert("404 not found")
-          }
-        }
-      });
-
-
- /*     let formData = new FormData();
+      /*     let formData = new FormData();
       console.log(this.respon.id);
       formData.append('comment_id',this.respon.id);
       formData.append('file', this.fileupload);
@@ -192,7 +222,7 @@ axios
         }
       });*/
     },
-  }
+  },
 };
 </script>
 
@@ -254,7 +284,7 @@ axios
 }
 .duetime {
   position: absolute;
-  width: 186px;
+  width: 190px;
   height: 17px;
   right: 0px;
 

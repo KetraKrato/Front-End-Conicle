@@ -324,9 +324,9 @@ export default {
 }
 .At {
   position: fixed;
-  width: 100px;
+  width: 120px;
   height: 50px;
-  left: 850px;
+  left: 855px;
   top: 30px;
   font-size: 25px;
   /*     border-bottom: 3px solid black;*/
@@ -337,9 +337,9 @@ export default {
 }
 .As {
   position: fixed;
-  width: 150px;
+  width: 170px;
   height: 50px;
-  left: 1000px;
+  left: 1025px;
   top: 30px;
   font-size: 25px;
   border-bottom: 3px solid black;
@@ -352,7 +352,7 @@ export default {
   position: fixed;
   width: 100px;
   height: 50px;
-  left: 1150px;
+  left: 1200px;
   top: 30px;
   font-size: 25px;
   padding-left: 10px;

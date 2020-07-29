@@ -215,7 +215,7 @@ height: 40px;
   left: 650px;
   top: 30px;
   font-size: 25px;
-  /*border-bottom: 3px solid black;*/
+  /*  border-bottom: 3px solid black;*/
   padding-left: 20px;
   margin-left: 10px;
   margin-right: 10px;
@@ -236,9 +236,9 @@ height: 40px;
 }
 .At {
   position: fixed;
-  width: 100px;
+  width: 120px;
   height: 50px;
-  left: 850px;
+  left: 855px;
   top: 30px;
   font-size: 25px;
   /*     border-bottom: 3px solid black;*/
@@ -249,12 +249,12 @@ height: 40px;
 }
 .As {
   position: fixed;
-  width: 100px;
+  width: 170px;
   height: 50px;
-  left: 1000px;
+  left: 1025px;
   top: 30px;
   font-size: 25px;
-  /*     border-bottom: 3px solid black;*/
+  /*border-bottom: 3px solid black;*/
   padding-left: 10px;
   margin-left: 10px;
   margin-right: 10px;
@@ -264,7 +264,7 @@ height: 40px;
   position: fixed;
   width: 100px;
   height: 50px;
-  left: 1150px;
+  left: 1200px;
   top: 30px;
   font-size: 25px;
   padding-left: 10px;

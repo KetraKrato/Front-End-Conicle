@@ -50,25 +50,7 @@
         </div>
       </div>
       <div class="posted">Posted</div>
-      <!--   <div class="privatebox">
-        <div v-bind:style="{ position: 'relative' }">
-          <div class="private">
-            <img class="imgpro" src="@/assets/logo.png" />
-            <span class="Owner">Post Owner</span>
-            <div class="Time">01 June 2020</div>
-            <p
-              class="toppic"
-            >fsdfsdfsdfsdfsdfssdflkojipoiwepoirflkjsdjofsd;ljifasfe;jewo;ipjfwe;oflijwefj;oipkdlsjf;ajweifjdfsdfsdf</p>
-          </div>
-          <div class="Replay">
-            <span>
-              <input class="commentsbox" type="text" placeholder="Add comment .." />
-            </span>
-            <button class="send">Send</button>
-          </div>
-        </div>
-      </div>-->
-      <!--  <Comment :IdComment="groupcomment[0].id" :IdUser="groupcomment[0].user_id" :Text="groupcomment[0].text" :DateCreated="groupcomment[0].date_created" :Files="groupcomment[0].comment_group_files"/> -->
+
       <div v-for="(i,index) in groupcomment" :key="index">
         <Comment
           :IdComment="i.id"
@@ -78,7 +60,6 @@
           :Files="i.comment_group_files"
         />
       </div>
-      <!--  <Comment v-for="i in groupcomment" :key="i" :IdComment="i.id" :IdUser="i.user_id" :Text="i.text" :DateCreated="i.date_created" :Files="i.comment_group_files"/> -->
     </div>
     <Bar />
     <div class="mainbar">
@@ -131,6 +112,7 @@ export default {
       },
       respon: {},
       polling: null,
+      showpopup:"",
     };
   },
   created() {
@@ -153,7 +135,6 @@ export default {
       })
       .catch((err) => {
         if (err.response) {
-          this.change();
           console.error(err.response.data);
           console.error(err.response.status);
           console.error(err.response.headers);
@@ -165,7 +146,7 @@ export default {
         }
       });
     /*   this.UpdateData();*/
-    /* this.polling = setInterval(()=>{
+     this.polling = setInterval(()=>{
     axios
       .get("http://127.0.0.1:8000/group/"+this.IdGroup+"/comment_group/", {
         headers: {
@@ -194,7 +175,7 @@ export default {
           }
         }
       });
-},1000)*/
+},1000)
     // call comment group
     axios
       .get("http://127.0.0.1:8000/group/" + this.IdGroup + "/comment_group/", {
@@ -420,10 +401,14 @@ export default {
       this.fileupload = {};
       this.fileName = "";
     },
-   /* sortComment(sortcomment){
-      
-      return sortcomment
-    }*/
+   showpop(value){
+     alert("showpopup")
+     console.log("showpopup")
+     console.log("showpopup")
+     console.log("showpopup")
+      console.log(value)   
+    },
+
   },
 };
 </script>
@@ -645,9 +630,9 @@ export default {
 }
 .At {
   position: fixed;
-  width: 100px;
+  width: 120px;
   height: 50px;
-  left: 850px;
+  left: 855px;
   top: 30px;
   font-size: 25px;
   /*     border-bottom: 3px solid black;*/
@@ -658,12 +643,12 @@ export default {
 }
 .As {
   position: fixed;
-  width: 100px;
+  width: 170px;
   height: 50px;
-  left: 1000px;
+  left: 1025px;
   top: 30px;
   font-size: 25px;
-  /*     border-bottom: 3px solid black;*/
+  /*border-bottom: 3px solid black;*/
   padding-left: 10px;
   margin-left: 10px;
   margin-right: 10px;
@@ -673,7 +658,7 @@ export default {
   position: fixed;
   width: 100px;
   height: 50px;
-  left: 1150px;
+  left: 1200px;
   top: 30px;
   font-size: 25px;
   padding-left: 10px;

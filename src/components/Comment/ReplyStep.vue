@@ -9,12 +9,9 @@
         >{{TextReply}}</p>
       </div>
       <img class="imgproR" :src="user.image" />
-        <div v-if="IduserC==Iduser" class="deleteBox"
-          @mouseover="hoverL = true; showL ='visible'; opL = '1'; rotate = 'rotate(90deg)' "
-          @mouseleave="hoverL = false; showL ='hidden'; opL = '0' "
-          :class="{ delete:hover }">
-          <img  class="delete"  :style="{visibility : showL , transform: rotate , opacity: opL }" src="@/assets/more.png" @click="showConfirm"/>
-        </div>
+     <!--            <div v-if="IduserC==Iduser" >
+          <img class="delete" src="@/assets/more.png" @click="showConfirm"/>
+        </div> -->
     </div>
   </div>
 </template>
@@ -27,9 +24,7 @@ export default {
       Iduser:Number,
       IduserC:Number,
       Id:Number,
-      DataUserReply:{},
-      showL: "hidden",
-      opL: "0",
+      DataUserReply:{}
     }
   },
   props:{
@@ -52,7 +47,7 @@ methods:{
     this.$dialogs.confirm('Are you sure to delete Reply?', options)
     .then(res => {
       console.log(res) // {ok: true|false|undefined}
-      if(res.ok==true){
+
       axios
       .delete("http://127.0.0.1:8000/group/comment/reply/" + this.IdReply+"/", {
         headers: {
@@ -78,7 +73,6 @@ methods:{
           }
         }
       });
-      }
     })
     },
 }
@@ -117,16 +111,11 @@ methods:{
   top: 20px;
   left: 110px;
 }
-.deleteBox{
+.delete{
   position: absolute;
   width: 20px;
-  height: 20px;
   top:26px;
   right: 26px;
-
-}
-.delete{
-  width: 20px;
-  transition: visibility 0s, opacity 0.2s linear;
+  transform: rotate(90deg)
 }
 </style>

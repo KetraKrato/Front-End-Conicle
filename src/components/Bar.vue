@@ -122,10 +122,12 @@ methods: {
         params: { NameGroup: window.localStorage.getItem("NameGroup") },
         name: "main"
       });*/
-       this.$router.push({ path: "/home" });
+       this.$router.push({ path: "/homemember" });
+       location.reload()
     },
     logout(){
       this.$router.push({ path: "/" });
+      location.reload()
     }
 },
 }
@@ -209,7 +211,7 @@ methods: {
   background: #ea2427;
   padding: 14px 10px;
   top:20px;
-  right: 10%;
+  right: 1%;
 
   align-items: center;
   text-align: center;

@@ -24,7 +24,10 @@ import 'semantic-ui-css/semantic.min.css';
 import Vue2Filters from "vue2-filters";
 import VS2 from 'vue-script2';
 import moment from 'moment';
+import 'v-slim-dialog/dist/v-slim-dialog.css'
+import SlimDialog from 'v-slim-dialog'
 
+Vue.use(SlimDialog)
 
 Vue.filter('formatDateNoTime', function(value) {
   if (value) {
