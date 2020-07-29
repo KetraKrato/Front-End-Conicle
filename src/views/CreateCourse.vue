@@ -2,52 +2,48 @@
   <div class="createpost">
     <div class="container-progress">
       <ul class="progressbar">
-        <li type="button" v-on:click="refresh" class="active">Create Group</li>
-        <li >Add Member</li>
-        <li>Select</li>
+        <li type="button" v-on:click="refresh" class="active">Create Course</li>
+        <li>Create Session</li>
+        <li>Create Step</li>
       </ul>
     </div>
     <form @submit.prevent="submit">
       <div class="container">
         <div class="header">
-          <p class="text_h">Create Group</p>
+          <p class="text_h">Create Course</p>
         </div>
 
         <div class="image">
           <div id="preview">
             <img v-if="url" :src="url" />
-            <img v-else :src="lists.group_image"/>
+            <img v-else :src="lists.cover"/>
           </div>
           <input class="inputImg" type="file" @change="onFileChange" />
         </div>
         <div class="name">
-          <label for="name">Group Name (required){{ lists.group_name }} </label>
-          <input
-            v-model="lists.group_name"
-            type="text"
-            class="form-control"
-            id="name"
-            required
-          />
+          <label for="name">Course Name (required) {{lists.name}} </label>
+          <input type="text" class="form-control" id="name" required v-model="lists.name"/>
           <div class="discription">
             <div class="form-group">
-              <label for="description"
-                >Description{{ lists.group_description }}
-              </label>
+              <label for="description">Description {{lists.description}} </label>
               <textarea
-                v-model="lists.group_description"
+                v-model="lists.description"
                 class="form-control"
                 id="description"
                 rows="3"
               ></textarea>
             </div>
-
+            <div class="select">
+              <lable for="status">Status {{lists.publish}}</lable>
+              <select class="custom-select" v-model="lists.publish" >
+                <option v-bind:value="true" @click="lists.publish = true">Publish</option>
+                <option v-bind:value="false" @click="lists.publish = false">Unpublish</option>
+              </select>
+              <!-- <datetime type="datetime" v-model="form.due_date"></datetime> -->
+            </div>
             <div class="buttonis-info">
-              <sui-button type="button" class="back" v-on:click="backPage"
-                >Cancle</sui-button
-              >
-              <sui-button type="button" secondary v-on:click="submit"
-                >Create &amp; Next</sui-button
+              <sui-button type="button" class="back" v-on:click="backPage">Cancle</sui-button>
+              <sui-button type="button" secondary v-on:click="submit">Create &amp; Next</sui-button
               >
             </div>
           </div>
@@ -59,46 +55,44 @@
 
 <script>
 import axios from "axios";
+// import { Datetime } from "vue-datetime";
 export default {
   name: "upload",
-  components: {},
+  components: {
+    // datetime: Datetime,
+  },
   prop: "num",
   data() {
     return {
-      lists: [
+      lists: 
         {
-          id: "",
-          group_name: "",
-          member_count: "",
-          group_description: "",
-          group_image: "",
-          publish: "",
-          creator: {
-            username: "",
-            first_name: "",
-            last_name: "",
-            id: "",
-          },
-          date_created: "",
-          date_modified: "",
-        },
-      ],
+      name: "",
+      description: "",
+      cover: null,
+      publish: false,
+      
+},
+      
       url: "",
       id: "",
       parameters: this.$route.query.type,
-      file:""
+      file: "",
+      edit:{
+        id:"",
+        name:"",
+      },
     };
   },
   mounted() {
     const parameters = this.$route.query.type;
     console.log(parameters);
-    if (parameters == "create") {
+    if (parameters == "createcourse") {
       console.log(parameters);
-    } else if (parameters == "edit") {
+    } else if (parameters == "editcourse") {
       try {
         axios
           .get(
-            "http://127.0.0.1:8000/group/" +localStorage.getItem("group_id") +  "/",
+            "http://127.0.0.1:8000/sop/course/" + localStorage.getItem("course_id") + "/",
             {
               headers: {
                 Authorization: `token ${localStorage.getItem("token")}`,
@@ -114,12 +108,12 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    } else if (parameters == "back") {
-       try {
+    } else if (parameters == "backfromstep" || parameters == "backfromsession") {
+      try {
         axios
           .get(
-            "http://127.0.0.1:8000/group/" +
-              localStorage.getItem("group_id") +
+            "http://127.0.0.1:8000/sop/course/" +
+              localStorage.getItem("course_id") +
               "/",
             {
               headers: {
@@ -139,34 +133,28 @@ export default {
     }
   },
   methods: {
-    refresh(){
-      location.reload()
+    refresh() {
+      location.reload();
     },
     onFileChange(e) {
       const file = e.target.files[0];
       this.url = URL.createObjectURL(file);
       this.file = e.target.files[0];
+      console.log(this.file)
     },
 
     async submit() {
-
-      if(this.parameters == "create" ){
-      const formData = new FormData();
-      formData.append("group_name", this.lists.group_name);
-      formData.append("group_description", this.lists.group_description);
-      console.log(formData.get("group_name"));
-      console.log(formData.get("group_description"));
-      formData.append("group_image", this.file);
-      try {
+      if (this.parameters == "createcourse") {
+        try {    
         await axios
-          .post("http://127.0.0.1:8000/group/", formData, {
+          .post("http://127.0.0.1:8000/sop/course/", this.lists, {
             headers: {Authorization: `token ${localStorage.getItem("token")}`,},
           })
           .then((respone) => {
-            this.id = respone.data.id
+            this.edit.id = respone.data.id
             console.log(respone.data);
-            localStorage.setItem("group_id", this.id)
-            this.$router.push({ path: "/addmember" , query: { type: "fromcreate"  }});
+            localStorage.setItem("course_id", this.id)
+            
           });
       } catch {
         (error) => {
@@ -176,25 +164,38 @@ export default {
           console.error(error.respone.headers);
         };
       }
-    }
-    
-      else if(this.parameters == "edit" || this.parameters == "back"){
-      const formData = new FormData();
-      formData.append("group_name", this.lists.group_name);
-      formData.append("group_description", this.lists.group_description);
-      console.log(formData.get("group_name"));
-      console.log(formData.get("group_description"));
-      formData.append("group_image", this.file);
       try {
-        await axios
-          .patch("http://127.0.0.1:8000/group/" + localStorage.getItem("group_id") + "/", formData, {
+        console.log(JSON.stringify(this.edit.id))
+         var formData = new FormData();
+         formData.append('name',this.lists.name)
+         formData.append('description',this.lists.description)
+         formData.append('cover', this.file)
+          await axios
+          .patch(
+            `http://127.0.0.1:8000/sop/course/` + this.edit.id + `/`,formData, {
+           headers: {Authorization: `token ${localStorage.getItem("token")}`,}},{emulateJSON: true})
+         .then((resp) => {console.log(JSON.stringify(resp.data))
+         localStorage.setItem("course_id",this.edit.id)
+         this.$router.push({ path: "/createsession" , query: { type: "fromcreatecourse"  }});
+         })
+      } catch (err) {
+        console.log(err);
+      }
+    } 
+      else if (this.parameters == "editcourse" || this.parameters == "backfromsession"  || this.parameters == "backfromstep") {
+        try {
+          var formDataedit = new FormData();
+          formDataedit.append('name',this.lists.name)
+          formDataedit.append('description',this.lists.description)
+          formDataedit.append('cover', this.file)
+        await axios.patch("http://127.0.0.1:8000/sop/course/" + localStorage.getItem("course_id") + "/", formDataedit, {
             headers: {Authorization: `token ${localStorage.getItem("token")}`,},
           })
           .then((respone) => {
-            this.id = respone.data.id
+            this.edit.id = respone.data.id
             console.log(respone.data);
-            localStorage.setItem("group_id", this.id)
-            this.$router.push({ path: "/addmember" , query: { type: "fromedit"  }});
+            localStorage.setItem("course_id", this.id)
+            
           });
       } catch {
         (error) => {
@@ -204,19 +205,26 @@ export default {
           console.error(error.respone.headers);
         };
       }
-    }
+      try {
+        
+          await axios
+          .patch(
+            `http://127.0.0.1:8000/sop/course/` + this.edit.id + `/`,this.lists.publish, {
+           headers: {Authorization: `token ${localStorage.getItem("token")}`,}},{emulateJSON: true})
+         .then((resp) => {console.log(JSON.stringify(resp.data))
+         localStorage.setItem("course_id",this.edit.id)
+         this.$router.push({ path: "/createsession" , query: { type: "fromeditcourse"  }});
+         })
+      } catch (err) {
+        console.log(err);
+      }
+        }
     },
 
     backPage() {
-      this.$router.push({ path: "/groupmanage" });
+      this.$router.push({ path: "/coursemanage" });
     },
-    next() {
-      if (this.inputName == "") {
-        console.log(this.inputName);
-      } else {
-        this.$router.push({ path: "/addmember" });
-      }
-    },
+
   },
 };
 </script>
@@ -227,6 +235,10 @@ export default {
   margin-left: 35%;
 }
 #preview {
+  background-image: url(https://www.creativeglobal.co.in/mcp/uploads/product/original/no_image.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
