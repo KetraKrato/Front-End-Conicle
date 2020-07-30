@@ -81,8 +81,8 @@ export default {
         })
          .then((response) => {
         if (response.data.is_staff == true) {
-          //this.$router.push({ path: "/groupmanage" });
-          this.$router.push({ path: "/homemember" });
+          this.$router.push({ path: "/groupmanage" });
+         // this.$router.push({ path: "/homemember" });
         } else if(response.data.is_staff == false){
           this.$router.push({ path: "/homemember" });
       
