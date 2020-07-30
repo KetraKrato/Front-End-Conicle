@@ -7,7 +7,7 @@
           <li class="active" type="button" v-on:click="refresh">Select Course</li>
       </ul>
       <div class="fheader">
-        <h3>Add Course {{add.new_course_id_list}}</h3>
+        <h3>Add Course {{add.courses}}</h3>
         
           
       </div>
@@ -30,7 +30,7 @@
         <div class="line"></div>
         <div class="show" v-for="list in lists" :key="list.id">
             <div class="content dropright">
-            <input type="checkbox" class="checkheadinside" @click="select" v-model="add.new_course_id_list" :value="list.id">
+            <input type="checkbox" class="checkheadinside" @click="select" v-model="group.courses" :value="list.id">
             <img class="cimg" :src="list.cover" alt="" />
               <span class="name">{{list.name}}</span>
               <span class="lastdate1">{{list.posts.length}}</span>
@@ -71,7 +71,7 @@ export default {
         },
         search:"",
         add:{
-          new_course_id_list: [],
+          courses: [],
         },
         group:{
           courses: [],
@@ -105,12 +105,12 @@ export default {
   methods: {
        selectAll: function() {
             // this.group.courses = [];
-            this.add.new_course_id_list = [];
+            this.group.courses = [];
 
             if (!this.allSelected) {
                 for (var list in this.lists) {
                     // this.group.courses.push(this.lists[list].id);
-                    this.add.new_course_id_list.push(this.lists[list].id);
+                    this.group.courses.push(this.lists[list].id);
                 }
             }
         },
@@ -147,11 +147,13 @@ export default {
       return moment(date, "YYYY-MM-DD").format("DD MMMM YYYY");
     },
     submit(){
+      console.log(this.add)
       try {
-          axios.patch(`http://127.0.0.1:8000/group/` + localStorage.getItem("group_id") +  `/` ,  this.add , {
+          axios.patch(`http://127.0.0.1:8000/group/` + localStorage.getItem("group_id") +  `/` ,  this.group , {
           headers: {Authorization: `token ${localStorage.getItem("token")}`,}},{emulateJSON: true})
          .then((resp) => {console.log(JSON.stringify(resp.data))
-          this.$router.push({ path: "/groupmanage" , });
+          // this.$router.push({ path: "/groupmanage" , });
+          
          })
       } catch (err) {
         console.log(err);

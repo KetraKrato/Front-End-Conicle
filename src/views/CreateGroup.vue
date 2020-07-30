@@ -227,6 +227,10 @@ export default {
   margin-left: 35%;
 }
 #preview {
+  background-image: url(https://www.creativeglobal.co.in/mcp/uploads/product/original/no_image.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -85,17 +85,17 @@ export default {
         console.log(err);
       }
   
-  // try {
-  //        axios.get(`http://127.0.0.1:8000/group/` + localStorage.getItem("group_id") +  `/member/`, {headers: {Authorization: `token ${localStorage.getItem("token")}`,}})
-  //        .then((resp) => {console.log(resp.data)
-  //        this.add_member.new_user_joined_list = resp.data
-  //        console.log(JSON.stringify(this.lists));
-  //        })
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  // },
+  try {
+         axios.get(`http://127.0.0.1:8000/group/` + localStorage.getItem("group_id") +  `/member/?idonly`, {headers: {Authorization: `token ${localStorage.getItem("token")}`,}})
+         .then((resp) => {console.log(resp.data)
+         this.add_member.new_user_joined_list = resp.data
+         console.log(JSON.stringify(this.lists));
+         })
+      } catch (err) {
+        console.log(err);
+      }
   },
+  
   methods: {
       selectAll: function() {
             this.add_member.new_user_joined_list = [];

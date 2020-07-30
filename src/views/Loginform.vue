@@ -54,8 +54,8 @@ export default {
   data() {
     return {
       users: {  
-          password: "Ketra13579",
-          email: "testuser@gmail.com",
+          password: "AAoo#001rai9",
+          email: "superuser2@test.com",
 
       },
       token: localStorage.getItem("token") || null,

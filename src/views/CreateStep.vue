@@ -1,7 +1,7 @@
 <template>
   <div class="createstep">
     <span><button class="plus" @click="openModal">+ Create Step</button></span>
-    <modal-direction v-show="modalOpen"></modal-direction>
+    <modal-direction  v-bind:list="e_id"  v-show="modalOpen"></modal-direction>
     <form @submit.prevent="submit">
       <div class="top">
         <ul class="progressbar">
@@ -27,6 +27,7 @@
         
         <div class="insidecontent" v-for="list in lists.step" :key="list.id" >
           <img class="cimg" :src="list.cover_file" alt="" />
+          <!-- <span>{{lists.step.cover_file}}</span> -->
           <span class="name">{{ list.name }}</span>
           <!-- <span class="discript">{{ list.textcontent }}</span> -->
           <span class="discript" v-if="list.textcontent < 20">{{
@@ -48,8 +49,8 @@
             <i class="edit icon"></i>
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <button class="dropdown-item" href="#">Edit</button>
-             <a class="dropdown-item" href="#" v-on:click="deleteGroup(list.id, list.name)">Delete</a>
+             <a class="dropdown-item" type="button" :value="list.id"  @click="openModaledit(list.id)">Edit</a>
+             <a class="dropdown-item" type="button" href="#" v-on:click="deleteGroup(list.id, list.name)">Delete</a>
           </div>
         </div>
         
@@ -83,7 +84,7 @@ export default {
         publish: "",
 
         step:[{
-          id: 1,
+          id: "",
           name: "",
           textcontent: "",
           link: "",
@@ -97,7 +98,7 @@ export default {
         date_created: "",
         date_modified: "",
       },
-      session_id: localStorage.getItem("session"),
+      session_id: localStorage.getItem("session "),
       
       
     };
@@ -120,7 +121,7 @@ export default {
           console.log(resp.data);
           this.lists = resp.data;
           this.count = this.lists.step.length;
-          console.log(resp.data.step.cover_file);
+          
           
         });
     } catch (err) {
@@ -147,6 +148,17 @@ export default {
     },
     openModal() {
       this.modalOpen = !this.modalOpen;
+      document.documentElement.style.overflow = 'hidden'
+    },
+    openModaledit(id){
+      localStorage.setItem("sessionedit" ,id)
+      this.e_id = id
+      console.log(this.e_id)
+      //if (localStorage.setItem("sessionedit" ,id) != '0'){
+      this.modalOpen = !this.modalOpen;
+        // localStorage.setItem("sessionedit", id)
+     // }
+
       document.documentElement.style.overflow = 'hidden'
     },
     deleteGroup(id ,name){
@@ -196,6 +208,7 @@ export default {
   width: 50px;
   height: 50px;
   line-height: 50px;
+  
   border: 2px solid #ddd;
   display: block;
   text-align: center;
