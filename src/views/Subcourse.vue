@@ -64,6 +64,7 @@ export default {
         })
         .then((response) => {
           this.course = response.data;
+          this.percent = this.course.progress
           console.log("this is sub")
           console.log(response.data);
           console.log(this.course);

@@ -148,8 +148,8 @@ export default {
           console.log("Comment SUCCESS!!");
 
           let formData = new FormData();
-          console.log(this.respon.assignment_work_id);
-          formData.append("assignment_work_id", this.respon.assignment_work_id);
+          console.log(this.respon.id);
+          formData.append("assignment_work_id", this.respon.id);
           formData.append("file", this.fileupload);
           /*for (var i = 0; i < this.files.length; i++) {
         let file = this.files[i];

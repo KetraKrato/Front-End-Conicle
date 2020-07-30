@@ -139,7 +139,11 @@ export default {
     console.log("beforeDestroy");
     clearInterval(this.polling);
   },
+    destroyed() {
+    clearInterval(this.polling);
+  },
   methods: {
+
     UpdateData() {
       this.polling = setInterval(() => {
         axios

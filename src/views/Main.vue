@@ -146,7 +146,7 @@ export default {
         }
       });
     /*   this.UpdateData();*/
-     this.polling = setInterval(()=>{
+   /*  this.polling = setInterval(()=>{
     axios
       .get("http://127.0.0.1:8000/group/"+this.IdGroup+"/comment_group/", {
         headers: {
@@ -175,7 +175,7 @@ export default {
           }
         }
       });
-},1000)
+},1000)*/
     // call comment group
     axios
       .get("http://127.0.0.1:8000/group/" + this.IdGroup + "/comment_group/", {

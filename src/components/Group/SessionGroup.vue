@@ -154,12 +154,12 @@ span.head {
     margin: 0px;
     padding: 0px;
     font-family: Montserrat;
-font-style: normal;
-font-weight: normal;
-font-size: 24px;
-line-height: 25px;
-align-items: center;
-text-align: center;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 25px;
+    align-items: center;
+    text-align: center;
 }
 .des {
   position: absolute;
