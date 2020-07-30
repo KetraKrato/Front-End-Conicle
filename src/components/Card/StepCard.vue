@@ -85,11 +85,16 @@ export default {
       session_id : localStorage.getItem("session_id")
     };
   },
-
+  update(){
+    this.session_id = localStorage.getItem("sessionedit")
+      console.log(this.session_id)
+  },
 
   methods: {
+    
     close() {
       this.$emit("input", !this.value);
+      localStorage.setItem("sessionedit",'0')
       location.reload()
     },
     onFileChange(e) {
@@ -102,8 +107,9 @@ export default {
       this.add.file.url = e.target.files[0];
       console.log(this.add.file.url);
     },
+    
     async submit() {
-        
+      
       if (this.add.file.url){
          try {
            const formData = new FormData();
@@ -148,6 +154,30 @@ export default {
         catch (err) {
           console.log(err);
         }
+      }
+      else if(!this.add.file.url){
+        try {
+           const formData = new FormData();
+           formData.append("name", this.create.name);
+           formData.append("textcontent", this.create.textcontent);
+           formData.append("cover_file", this.create.cover_file);
+           formData.append("post_id", this.session_id);
+           console.log(formData.get("name"));
+           console.log(formData.get("post_id"));
+        await axios.post( `http://127.0.0.1:8000/sop/step/`,  formData,
+            {
+              headers: {Authorization: `token ${localStorage.getItem("token")}`,},
+            },)
+          .then((resp) => {
+            this.add.step_id = resp.data.id;
+            console.log(this.add.stepid)
+            console.log(JSON.stringify(resp.data));
+            location.reload()
+
+          });
+      } catch (err) {
+        console.error(err.resp.name);
+      }
       }
     },
   },

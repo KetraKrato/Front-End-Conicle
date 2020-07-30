@@ -74,6 +74,7 @@ export default {
   mounted() {
     localStorage.getItem("sessionedit")
     console.log(this.list + "m")
+    
   },
   methods: {
     close() {
@@ -87,7 +88,7 @@ export default {
       console.log(this.file);
     },
     async submit() {
-      if (this.test == "0") {
+      
         try {
           var formData = new FormData();
           formData.append("name", this.create.name);
@@ -107,40 +108,16 @@ export default {
             .then((resp) => {
               console.log(JSON.stringify(resp.data));
               localStorage.setItem("sessionedit", "0");
+              location.reload()
             });
         } catch (err) {
           console.log(err);
         }
-      } else if (localStorage.getItem("sessionedit") != 0) {
-        try {
-          var formDataedit = new FormData();
-          formDataedit.append("name", this.create.name);
-          formDataedit.append("description", this.create.description);
-          formDataedit.append("cover", this.file);
-          await axios
-            .patch(
-              `http://127.0.0.1:8000/sop/session/` +
-                localStorage.getItem("sessionedit") +
-                `/`,
-              formDataedit,
-              {
-                headers: {
-                  Authorization: `token ${localStorage.getItem("token")}`,
-                },
-              },
-              { emulateJSON: true }
-            )
-            .then((resp) => {
-              console.log(JSON.stringify(resp.data));
-              localStorage.setItem("sessionedit", "0");
-            });
-        } catch (err) {
-          console.log(err);
-        }
+      
       }
     },
-  },
-};
+  }
+
 </script>
 
 <style scoped>

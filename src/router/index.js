@@ -4,7 +4,6 @@ import Home from "../views/Home.vue";
 import Class from "../views/Each_Class.vue";
 import Step from "../views/Step.vue";
 import Loginform from "../views/Loginform.vue";
-import Text from "../views/Text.vue"
 import Nofile from "../views/Nofile.vue"
 import CreateStep from "../views/CreateStep.vue"
 import CreatePost from "../views/CreatePost.vue"
@@ -21,8 +20,8 @@ import CourseManage from "../views/CourseManage.vue"
 import CreateSession from "../views/CreateSession.vue"
 import Assignmanage from "../views/AssignManage.vue"
 import CreateAssign from "../views/CreateAssignment.vue"
-import EditCourse from "../views/EditCourse.vue"
-import EditGroup from "../views/EditGroup.vue"
+// import EditCourse from "../views/EditCourse.vue"
+// import EditGroup from "../views/EditGroup.vue"
 
 
 import HomeMember from '../views/HomeMember.vue'
@@ -79,11 +78,6 @@ const routes = [
     path: "/creategroup",
     name: "Creategroup",
     component: CreateGroup,
-  },
-  {
-    path: "/text",
-    name: "Text",
-    component: Text,
   },
   {
     path: "/nofile",
@@ -150,16 +144,16 @@ const routes = [
     name: "Createassign",
     component: CreateAssign,
   },
-  {
-    path: "/editcourse",
-    name: "Editcourse",
-    component: EditCourse,  
-  },
-  {
-    path: "/editgroup",
-    name: "Editgroup",
-    component: EditGroup,
-  },
+  // {
+  //   path: "/editcourse",
+  //   name: "Editcourse",
+  //   component: EditCourse,  
+  // },
+  // {
+  //   path: "/editgroup",
+  //   name: "Editgroup",
+  //   component: EditGroup,
+  // },
   {
     path: '/:NameGroup/main',
     name: 'main',
