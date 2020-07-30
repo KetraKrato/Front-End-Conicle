@@ -265,7 +265,7 @@ methods: {
        }
     },
      async submit() {
-      if(localStorage.getItem("sessforstepedit") == '0'){
+      // if(localStorage.getItem("sessforstepedit") == '0'){
       if (this.add.file.url){
          try {
            const formData = new FormData();
@@ -336,82 +336,82 @@ methods: {
       }
       }
       }
-      else{
-      
-      if (this.add.file.url){
-         try {
-           const formData2 = new FormData();
-           formData2.append("name", this.create.name);
-           formData2.append("textcontent", this.create.textcontent);
-           formData2.append("cover_file", this.create.cover_file);
-           formData2.append("post_id", this.session_id);
-           console.log(formData2.get("name"));
-           console.log(formData2.get("post_id"));
-        await axios.patch( `http://127.0.0.1:8000/sop/step/` + localStorage.getItem("sessforstepedit") + "/",  formData2,
-            {
-              headers: {Authorization: `token ${localStorage.getItem("token")}`,},
-            },)
-          .then((resp) => {
-            this.add.step_id = resp.data.id;
-            console.log(this.add.stepid)
-            console.log(JSON.stringify(resp.data));
-          });
-      } catch (err) {
-        console.error(err.resp.name);
-      }
-        try{
-          var formDataedit2 = new FormData();
-          formDataedit2.append("step_id", this.add.step_id);
-          formDataedit2.append("file", this.add.file.url);
-          console.log(formDataedit2.get("file"));
-          console.log(this.add);
-          await axios
-            .post( `http://127.0.0.1:8000/sop/step/file/`,  formDataedit2,
-              {
-                headers: {
-                  Authorization: `token ${localStorage.getItem("token")}`,
-                },
-              },
-              { emulateJSON: true }
-            )
-            .then((resp) => {
-              console.log(JSON.stringify(resp.data));
-              localStorage.setItem("sessforstepedit" , "0") 
-              location.reload()
-            });
-        }
-        catch (err) {
-          console.log(err);
-        }
-      }
-      else if(!this.add.file.url){
-        try {
-           const formData = new FormData();
-           formData.append("name", this.create.name);
-           formData.append("textcontent", this.create.textcontent);
-           formData.append("cover_file", this.create.cover_file);
-           formData.append("post_id", this.session_id);
-           console.log(formData.get("name"));
-           console.log(formData.get("post_id"));
-        await axios.post( `http://127.0.0.1:8000/sop/step/`,  formData,
-            {
-              headers: {Authorization: `token ${localStorage.getItem("token")}`,},
-            },)
-          .then((resp) => {
-            this.add.step_id = resp.data.id;
-            console.log(this.add.stepid)
-            console.log(JSON.stringify(resp.data));
-            location.reload()
+      // else if (localStorage.getItem("sessforstepedit" != "0")){
+      // console.log(localStorage.getItem("sessforstepedit"))
+      // if (this.add.file.url){
+      //    try {
+      //      const formData2 = new FormData();
+      //      formData2.append("name", this.create.name);
+      //      formData2.append("textcontent", this.create.textcontent);
+      //      formData2.append("cover_file", this.create.cover_file);
+      //      formData2.append("post_id", this.session_id);
+      //      console.log(formData2.get("name"));
+      //      console.log(formData2.get("post_id"));
+      //   await axios.patch( `http://127.0.0.1:8000/sop/step/` + localStorage.getItem("sessforstepedit") + "/",  formData2,
+      //       {
+      //         headers: {Authorization: `token ${localStorage.getItem("token")}`,},
+      //       },)
+      //     .then((resp) => {
+      //       this.add.step_id = resp.data.id;
+      //       console.log(this.add.stepid)
+      //       console.log(JSON.stringify(resp.data));
+      //     });
+      // } catch (err) {
+      //   console.error(err.resp.name);
+      // }
+      //   try{
+      //     var formDataedit2 = new FormData();
+      //     formDataedit2.append("step_id", this.add.step_id);
+      //     formDataedit2.append("file", this.add.file.url);
+      //     console.log(formDataedit2.get("file"));
+      //     console.log(this.add);
+      //     await axios
+      //       .post( `http://127.0.0.1:8000/sop/step/file/`,  formDataedit2,
+      //         {
+      //           headers: {
+      //             Authorization: `token ${localStorage.getItem("token")}`,
+      //           },
+      //         },
+      //         { emulateJSON: true }
+      //       )
+      //       .then((resp) => {
+      //         console.log(JSON.stringify(resp.data));
+      //         localStorage.setItem("sessforstepedit" , "0") 
+      //         location.reload()
+      //       });
+      //   }
+      //   catch (err) {
+      //     console.log(err);
+      //   }
+      // }
+      // else if(!this.add.file.url){
+      //   try {
+      //      const formData = new FormData();
+      //      formData.append("name", this.create.name);
+      //      formData.append("textcontent", this.create.textcontent);
+      //      formData.append("cover_file", this.create.cover_file);
+      //      formData.append("post_id", this.session_id);
+      //      console.log(formData.get("name"));
+      //      console.log(formData.get("post_id"));
+      //   await axios.post( `http://127.0.0.1:8000/sop/step/`,  formData,
+      //       {
+      //         headers: {Authorization: `token ${localStorage.getItem("token")}`,},
+      //       },)
+      //     .then((resp) => {
+      //       this.add.step_id = resp.data.id;
+      //       console.log(this.add.stepid)
+      //       console.log(JSON.stringify(resp.data));
+      //       location.reload()
 
-          });
-      } catch (err) {
-        console.error(err.resp.name);
+      //     });
+      // } catch (err) {
+      //   console.error(err.resp.name);
+      // }
       }
       }
-      }
-    },
-},
-}
+    
+
+
 </script>
 
 <style scoped>
