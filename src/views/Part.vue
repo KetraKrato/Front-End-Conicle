@@ -32,6 +32,8 @@
       <div class="mainbar">
       <div class="M" @click="selectM">Main</div>
       <div class="C">Course</div>
+      <div class="At" @click="selectP">Attachment</div>
+      <div class="As" @click="selectP">Assignment</div>
       <div class="P" @click="selectP">People</div>
     </div>
   </div>
@@ -142,24 +144,25 @@ img{
   top: 0;
 
 }
+
 .M {
-  position: absolute;
+  position: fixed;
   width: 100px;
   height: 50px;
-  left: 800px;
+  left: 650px;
   top: 30px;
   font-size: 25px;
-  /*    border-bottom: 3px solid black;*/
+  border-bottom: 3px solid black;
   padding-left: 20px;
   margin-left: 10px;
   margin-right: 10px;
   cursor: pointer;
 }
 .C {
-  position: absolute;
+  position: fixed;
   width: 100px;
   height: 50px;
-  left: 900px;
+  left: 750px;
   top: 30px;
   font-size: 25px;
   border-bottom: 3px solid black;
@@ -168,11 +171,37 @@ img{
   margin-right: 10px;
   cursor: pointer;
 }
-.P {
-  position: absolute;
+.At {
+  position: fixed;
+  width: 100px;
+  height: 50px;
+  left: 850px;
+  top: 30px;
+  font-size: 25px;
+  /*     border-bottom: 3px solid black;*/
+  padding-left: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.As {
+  position: fixed;
   width: 100px;
   height: 50px;
   left: 1000px;
+  top: 30px;
+  font-size: 25px;
+  /*     border-bottom: 3px solid black;*/
+  padding-left: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.P {
+  position: fixed;
+  width: 100px;
+  height: 50px;
+  left: 1150px;
   top: 30px;
   font-size: 25px;
   padding-left: 10px;

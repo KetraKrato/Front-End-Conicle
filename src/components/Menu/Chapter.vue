@@ -1,6 +1,6 @@
 <template>
    <div class="NumChapter" >
-       <div @click="isShow">{{Chaptertitle}}</div>
+       <div @click="select">{{NameGroup}}</div>
 
           
         </div>
@@ -11,15 +11,12 @@
 export default {
     props:{
             Chaptertitle:String,
-            NumVideo1 : {
-                  type:Array,
-                default: ()=> ['Video1','Video2'],
-                
-            },
-            NumVideo2 : {
+            NameGroup : String,
+            IdGroup:Number,
+     /*       NumVideo2 : {
                   type:Array,
                 default: ()=> ['Video1','Video2','Video3'],    
-            },
+            },*/
             },
  data() {
     return {  
@@ -39,7 +36,14 @@ export default {
   },
 
   methods: {
- 
+select() {
+      console.log("SelectGroup");
+      window.localStorage.setItem("IdGroup",this.IdGroup);
+      window.localStorage.setItem("NameGroup",this.NameGroup);
+      this.$router.push({ params:{ NameGroup: this.NameGroup }, name: "main" });
+      location.reload();
+    //  this.$router.push({ path: "/main" });
+    }
     },
 
 }

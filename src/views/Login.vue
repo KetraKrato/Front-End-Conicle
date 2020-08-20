@@ -7,18 +7,18 @@
         </div>
         <div class="boxtxt">
           <p class="text">Email</p>
-          <input type="text" name="user" v-model="account.username" />
+          <input type="text" name="user" v-model="account.email" />
         </div>
         <div class="boxtxt">
           <p class="text">Password</p>
           <input type="password" name="pass" v-model="account.password" />
         </div>
-        <button class="login" type="submit" @click="change">Login</button>
+        <button class="login" type="submit" @click.enter="submit">Login</button>
         <!-- <button  @click="$router.push({path:'/creategroup'})">ChangePage</button> -->
       </div>
-      <div style=" position: absolute; margin-top: 16px; color: red;">
+   <!--   <div style=" position: absolute; margin-top: 16px; color: red;">
         #Spy {{ JSON.stringify(account) }}
-      </div>
+      </div> -->
     </form>
     <div class="top">
         <p>Group learning</p>
@@ -39,8 +39,8 @@ export default {
       act: false,
       obj: String,
       account: {
-        password: "kfAdl1542",
-        username: "test123456",
+        password: "",
+        email: "",
       },
     };
   },
